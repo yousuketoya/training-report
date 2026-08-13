@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>研修報告 回覧板</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #EEF0EA;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+:root {
+  --paper: #EEF0EA;
+  --card: #FBFAF5;
+  --ink: #202A25;
+  --navy: #22384B;
+  --vermillion: #B23A2E;
+  --gold: #A9822E;
+  --line: #D8D3C4;
+}
+
+.trb-app {
+  color: var(--ink);
+  background: var(--paper);
+  padding: 28px 24px 40px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.trb-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  border-bottom: 2px solid var(--navy);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+.trb-header-actions { display: flex; gap: 10px; }
+.trb-eyebrow { margin: 0 0 4px; font-size: 12px; letter-spacing: 0.12em; color: var(--navy); font-weight: 700; }
+.trb-title {
+  margin: 0 0 6px;
+  font-family: 'Shippori Mincho', serif;
+  font-weight: 700;
+  font-size: clamp(24px, 4vw, 34px);
+  color: var(--navy);
+}
+.trb-sub { margin: 0; font-size: 14px; color: #55605A; max-width: 46ch; }
+
+.trb-btn {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1.5px solid var(--navy);
+  background: transparent;
+  color: var(--navy);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.trb-btn:hover { background: rgba(34,56,75,0.06); }
+.trb-btn:focus-visible { outline: 2px solid var(--vermillion); outline-offset: 2px; }
+.trb-btn-primary { background: var(--navy); color: #fff; }
+.trb-btn-primary:hover { background: #1a2c3b; }
+
+.trb-banner {
+  background: #FBEAE8;
+  border: 1px solid var(--vermillion);
+  color: #7A281F;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.trb-loading, .trb-empty { text-align: center; padding: 48px 0; color: #55605A; }
+.trb-empty p { margin-bottom: 16px; }
+
+.trb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.trb-card {
+  position: relative;
+  text-align: left;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 20px 16px 16px;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  width: 100%;
+}
+.trb-card:hover { box-shadow: 0 6px 16px rgba(34,56,75,0.12); transform: translateY(-2px); }
+.trb-card:focus-visible { outline: 2px solid var(--vermillion); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  .trb-card { transition: none; }
+  .trb-card:hover { transform: none; }
+}
+
+.trb-pin { position: absolute; top: -6px; left: 20px; width: 12px; height: 12px; border-radius: 50%; background: var(--navy); }
+
+.trb-dept {
+  align-self: flex-start;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--navy);
+  background: rgba(34,56,75,0.08);
+  padding: 3px 8px;
+  border-radius: 100px;
+}
+.trb-card-title { margin: 0; font-family: 'Shippori Mincho', serif; font-size: 18px; font-weight: 700; line-height: 1.4; }
+.trb-card-meta { margin: 0; font-size: 12px; color: #6B756E; }
+.trb-card-summary {
+  margin: 0;
+  font-size: 13px;
+  color: #454F49;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.trb-stamp-row { display: flex; align-items: center; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
+.trb-no-stamp { font-size: 12px; color: #8A9089; }
+.trb-stamp-extra { font-size: 11px; color: #6B756E; margin-left: 2px; }
+
+.trb-hanko {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--vermillion);
+  color: var(--vermillion);
+  border-radius: 50%;
+  font-family: 'Shippori Mincho', serif;
+  font-weight: 700;
+  background: rgba(178,58,46,0.06);
+  mix-blend-mode: multiply;
+  flex-shrink: 0;
+}
+.trb-hanko-sm { width: 22px; height: 22px; font-size: 11px; }
+.trb-hanko-md { width: 34px; height: 34px; font-size: 15px; }
+
+.trb-footnote { margin-top: 24px; font-size: 12px; color: #8A9089; }
+.trb-saving { color: var(--gold); font-weight: 700; }
+
+.trb-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(32,42,37,0.45);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 16px;
+  overflow-y: auto;
+  z-index: 50;
+}
+.trb-panel { background: var(--card); border-radius: 12px; max-width: 560px; width: 100%; padding: 28px 24px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.25); }
+.trb-panel-wide { max-width: 640px; }
+.trb-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--navy);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.trb-close:hover { background: rgba(34,56,75,0.08); }
+.trb-close:focus-visible { outline: 2px solid var(--vermillion); }
+
+.trb-panel-title { font-family: 'Shippori Mincho', serif; font-size: 22px; margin: 10px 0 4px; color: var(--navy); }
+.trb-panel-summary { font-size: 14px; line-height: 1.7; margin: 12px 0; }
+.trb-points { margin: 0 0 8px; padding-left: 20px; font-size: 14px; line-height: 1.8; }
+.trb-rule { border: none; border-top: 1px solid var(--line); margin: 20px 0; }
+.trb-comments-heading { font-size: 15px; margin: 0 0 12px; color: var(--navy); }
+.trb-no-comments { font-size: 13px; color: #8A9089; margin-bottom: 16px; }
+
+.trb-comment-list { list-style: none; margin: 0 0 20px; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.trb-comment { display: flex; gap: 12px; align-items: flex-start; }
+.trb-comment-author { margin: 0 0 2px; font-size: 13px; font-weight: 700; color: var(--navy); }
+.trb-comment-text { margin: 0; font-size: 13px; line-height: 1.7; }
+
+.trb-label { display: block; font-size: 12px; font-weight: 700; color: var(--navy); margin: 12px 0 4px; }
+.trb-input, .trb-textarea {
+  width: 100%;
+  font-family: inherit;
+  font-size: 14px;
+  padding: 9px 11px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #fff;
+  color: var(--ink);
+}
+.trb-input:focus-visible, .trb-textarea:focus-visible { outline: 2px solid var(--vermillion); outline-offset: 1px; }
+.trb-textarea { resize: vertical; }
+.trb-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.trb-form-row-3 { grid-template-columns: 1fr 1fr 1fr; }
+.trb-share-note { font-size: 12px; color: #8A9089; margin: 10px 0; }
+.trb-form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+.trb-btn-stamp { margin-top: 14px; }
+.trb-picker { margin-bottom: 4px; }
+.trb-picker-hint { font-size: 12px; color: var(--gold); margin: 6px 0 0; }
+
+.trb-floor-section { margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--line); }
+.trb-floor-section:first-of-type { border-top: none; margin-top: 0; }
+.trb-floor-heading { font-family: 'Shippori Mincho', serif; font-size: 18px; color: var(--navy); margin: 0 0 10px; }
+.trb-role-block { margin-bottom: 16px; }
+.trb-role-heading { font-size: 13px; font-weight: 700; margin: 0 0 6px; color: var(--ink); }
+.trb-chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.trb-chip { display: inline-flex; align-items: center; gap: 4px; background: rgba(34,56,75,0.08); color: var(--navy); font-size: 12px; padding: 4px 6px 4px 10px; border-radius: 100px; }
+.trb-chip-remove { background: none; border: none; color: var(--vermillion); font-size: 14px; line-height: 1; cursor: pointer; padding: 2px 4px; }
+.trb-add-row { display: flex; gap: 8px; }
+.trb-add-row .trb-input { flex: 1; }
+
+.trb-link-row { font-size: 13px; margin: 10px 0; }
+.trb-link { color: var(--vermillion); word-break: break-all; }
+
+.trb-file-list { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.trb-file-chip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  background: rgba(34,56,75,0.06);
+  border-radius: 7px;
+  padding: 6px 6px 6px 12px;
+  font-size: 12px;
+  color: var(--ink);
+}
+
+.trb-attach-list { display: flex; flex-direction: column; gap: 12px; margin: 8px 0 4px; }
+.trb-attach-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: rgba(34,56,75,0.04);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 10px;
+}
+.trb-attach-icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: rgba(34,56,75,0.08);
+  border-radius: 7px;
+}
+.trb-attach-thumb-wrap {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 7px;
+  overflow: hidden;
+  background: rgba(34,56,75,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.trb-attach-thumb { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
+.trb-attach-thumb-loading, .trb-attach-thumb-error { font-size: 10px; color: #6B756E; text-align: center; padding: 2px; }
+.trb-attach-meta { flex: 1; min-width: 0; }
+.trb-attach-name { margin: 0; font-size: 13px; font-weight: 700; word-break: break-all; }
+.trb-attach-size { margin: 2px 0 6px; font-size: 11px; color: #6B756E; }
+.trb-attach-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.trb-attach-actions .trb-btn { padding: 5px 12px; font-size: 12px; }
+.trb-attach-error-text { font-size: 11px; color: var(--vermillion); margin: 4px 0 0; }
+
+@media (max-width: 480px) {
+  .trb-app { padding: 20px 14px 32px; }
+  .trb-form-row, .trb-form-row-3 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="trb-app">
+  <header class="trb-header">
+    <div>
+      <p class="trb-eyebrow">社内研修共有</p>
+      <h1 class="trb-title">研修報告 回覧板</h1>
+      <p class="trb-sub">紙の回覧では一人しか読めなかった報告書を、ここでは全員が読んで感想を残せます。</p>
+    </div>
+    <div class="trb-header-actions">
+      <button class="trb-btn" id="settings-btn">⚙ 設定</button>
+      <button class="trb-btn trb-btn-primary" id="new-report-btn">＋ 報告を投稿</button>
+    </div>
+  </header>
+  <div id="trb-banner-slot"></div>
+  <div id="trb-board-slot"><p class="trb-loading">読み込み中…</p></div>
+  <p class="trb-footnote">※ ここに投稿した内容と感想は、このアプリを利用する社内メンバー全員に共有されます。<span id="trb-saving-slot"></span></p>
+</div>
+
+<script>
+const REPORTS_KEY = "training-reports-v2";
+const STAFF_KEY = "training-report-staff-v1";
+
+const STAFF_STRUCTURE = {
+  "2階": ["看護師長", "看護師", "介護士"],
+  "1階": ["副施設長", "事務長", "相談員", "事務員", "リハビリ", "通所リハビリ", "ホットルーム"],
+};
+
+function defaultStaff() {
+  const base = {};
+  for (const floor of Object.keys(STAFF_STRUCTURE)) {
+    base[floor] = {};
+    for (const role of STAFF_STRUCTURE[floor]) base[floor][role] = [];
+  }
+  base["2階"]["看護師長"] = ["田中 恵子"];
+  base["2階"]["看護師"] = ["佐藤 直樹"];
+  base["2階"]["介護士"] = ["鈴木 舞"];
+  base["1階"]["事務長"] = ["高橋 誠"];
+  return base;
+}
+
+function hashSeed(str) {
+  let h = 0;
+  const s = str || "?";
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 1000;
+  return h;
+}
+function stampRotation(seed) { return (hashSeed(seed) % 13) - 6; }
+
+function formatDate(dateStr) {
+  if (!dateStr) return "";
+  try {
+    return new Date(dateStr).toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" });
+  } catch { return dateStr; }
+}
+
+function makeId() { return Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 7); }
+
+function getPersonName(person) {
+  if (!person) return "";
+  return person.name === "__other__" ? (person.custom || "").trim() : (person.name || "").trim();
+}
+function emptyPerson() { return { floor: "", role: "", name: "", custom: "" }; }
+
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str == null ? "" : String(str);
+  return div.innerHTML;
+}
+
+function createElement(html) {
+  const template = document.createElement("template");
+  template.innerHTML = html.trim();
+  return template.content.firstElementChild;
+}
+
+const MAX_FILE_SIZE = 3.5 * 1024 * 1024; // leave headroom under the 5MB storage limit once base64-encoded
+const attachmentCache = {};
+
+function attachmentKey(reportId, attId) { return `attachment-${reportId}-${attId}`; }
+
+function formatFileSize(bytes) {
+  if (bytes == null) return "";
+  if (bytes < 1024) return bytes + " B";
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+  return (bytes / 1024 / 1024).toFixed(1) + " MB";
+}
+
+function readFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
+
+function dataUrlToBlob(dataUrl) {
+  const [header, base64] = dataUrl.split(",");
+  const mimeMatch = header.match(/data:(.*);base64/);
+  const mime = mimeMatch ? mimeMatch[1] : "application/octet-stream";
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new Blob([bytes], { type: mime });
+}
+
+async function getAttachmentData(reportId, attachment) {
+  const key = attachmentKey(reportId, attachment.id);
+  if (attachmentCache[key]) return attachmentCache[key];
+  const result = await window.storage.get(key, true);
+  if (!result) throw new Error("attachment not found");
+  attachmentCache[key] = result.value;
+  return result.value;
+}
+
+function viewAttachment(dataUrl) {
+  const blob = dataUrlToBlob(dataUrl);
+  const url = URL.createObjectURL(blob);
+  window.open(url, "_blank", "noopener");
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+
+function downloadAttachment(dataUrl, filename) {
+  const blob = dataUrlToBlob(dataUrl);
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+const SEED_REPORTS = [
+  {
+    id: makeId(),
+    title: "感染対策研修 受講報告",
+    floor: "2階",
+    role: "看護師",
+    presenter: "佐藤 直樹",
+    date: "2026-07-14",
+    summary: "外部講師による感染対策研修に参加。標準予防策の徹底と、フロアごとの防護具の使い分けについて学んだ。",
+    keyPoints: [
+      "手袋交換のタイミングを見直す必要がある",
+      "個人防護具の在庫は各フロアで最低3日分を確保する",
+      "次回はフロア合同での実技演習を提案したい",
+    ],
+    link: "",
+    attachments: [],
+    createdAt: Date.now() - 1000 * 60 * 60 * 24 * 2,
+    comments: [
+      { id: makeId(), author: "田中 恵子", text: "2階でも同じ課題が出ていたので参考になりました。実技演習ぜひやりましょう。", createdAt: Date.now() - 1000 * 60 * 60 * 20 },
+    ],
+  },
+  {
+    id: makeId(),
+    title: "レクリエーション企画研修 受講報告",
+    floor: "2階",
+    role: "介護士",
+    presenter: "鈴木 舞",
+    date: "2026-07-28",
+    summary: "季節行事を取り入れたレクリエーションの企画研修を受講。参加度を高める声かけの工夫が中心だった。",
+    keyPoints: ["少人数グループに分けると参加率が上がる", "職種を問わず声かけの型を共有すると効果的"],
+    link: "",
+    attachments: [],
+    createdAt: Date.now() - 1000 * 60 * 60 * 24 * 5,
+    comments: [],
+  },
+];
+
+const state = { reports: null, staff: null, saving: false };
+
+function setError(msg) {
+  const slot = document.getElementById("trb-banner-slot");
+  slot.innerHTML = msg ? `<div class="trb-banner">${escapeHtml(msg)}</div>` : "";
+}
+function updateSavingIndicator() {
+  const slot = document.getElementById("trb-saving-slot");
+  slot.textContent = state.saving ? " 保存中…" : "";
+}
+
+async function persistReports(next) {
+  state.reports = next;
+  state.saving = true; updateSavingIndicator();
+  try {
+    const result = await window.storage.set(REPORTS_KEY, JSON.stringify(next), true);
+    if (!result) throw new Error("no result");
+    setError(null);
+  } catch { setError("保存に失敗しました。通信環境を確認してもう一度お試しください。"); }
+  finally { state.saving = false; updateSavingIndicator(); }
+}
+
+async function persistStaff(next) {
+  state.staff = next;
+  state.saving = true; updateSavingIndicator();
+  try {
+    const result = await window.storage.set(STAFF_KEY, JSON.stringify(next), true);
+    if (!result) throw new Error("no result");
+    setError(null);
+  } catch { setError("職員データの保存に失敗しました。"); }
+  finally { state.saving = false; updateSavingIndicator(); }
+}
+
+async function loadReports() {
+  try {
+    const result = await window.storage.get(REPORTS_KEY, true);
+    state.reports = result ? JSON.parse(result.value) : SEED_REPORTS;
+    if (!result) await window.storage.set(REPORTS_KEY, JSON.stringify(SEED_REPORTS), true);
+  } catch {
+    state.reports = SEED_REPORTS;
+    setError("保存データの読み込みに失敗したため、サンプルを表示しています。");
+  }
+}
+async function loadStaff() {
+  try {
+    const result = await window.storage.get(STAFF_KEY, true);
+    state.staff = result ? JSON.parse(result.value) : defaultStaff();
+    if (!result) await window.storage.set(STAFF_KEY, JSON.stringify(defaultStaff()), true);
+  } catch {
+    state.staff = defaultStaff();
+    setError("職員データの読み込みに失敗したため、サンプルを表示しています。");
+  }
+}
+
+function hankoHtml(name, size) {
+  const initial = (name || "?").trim().charAt(0) || "?";
+  const rot = stampRotation(name);
+  return `<span class="trb-hanko trb-hanko-${size}" style="transform:rotate(${rot}deg)" title="${escapeHtml(name)}">${escapeHtml(initial)}</span>`;
+}
+
+function cardHtml(r) {
+  const shown = r.comments.slice(0, 4);
+  const extra = r.comments.length - shown.length;
+  const stampsHtml = shown.length === 0
+    ? '<span class="trb-no-stamp">まだ感想なし</span>'
+    : shown.map(c => hankoHtml(c.author, "sm")).join("") + (extra > 0 ? `<span class="trb-stamp-extra">+${extra}</span>` : "");
+  return `
+    <button class="trb-card" id="card-${r.id}">
+      <span class="trb-pin" aria-hidden="true"></span>
+      <span class="trb-dept">${escapeHtml(r.floor)} ・ ${escapeHtml(r.role)}${(r.attachments && r.attachments.length) || r.link ? " ・ 📎" : ""}</span>
+      <h2 class="trb-card-title">${escapeHtml(r.title)}</h2>
+      <p class="trb-card-meta">${escapeHtml(r.presenter)} ・ ${formatDate(r.date)}</p>
+      <p class="trb-card-summary">${escapeHtml(r.summary)}</p>
+      <div class="trb-stamp-row">${stampsHtml}</div>
+    </button>`;
+}
+
+function buildAttachmentRow(reportId, att) {
+  const isImage = att.mimeType && att.mimeType.startsWith("image/");
+  const row = createElement(`
+    <div class="trb-attach-item">
+      ${isImage ? '<div class="trb-attach-thumb-wrap"><span class="trb-attach-thumb-loading">読込中</span></div>' : '<div class="trb-attach-icon">📄</div>'}
+      <div class="trb-attach-meta">
+        <p class="trb-attach-name">${escapeHtml(att.name)}</p>
+        <p class="trb-attach-size">${formatFileSize(att.size)}</p>
+        <div class="trb-attach-actions">
+          <button type="button" class="trb-btn trb-attach-view">表示</button>
+          <button type="button" class="trb-btn trb-attach-download">ダウンロード</button>
+        </div>
+        <p class="trb-attach-error-text" hidden>読み込みに失敗しました。</p>
+      </div>
+    </div>
+  `);
+
+  const errorText = row.querySelector(".trb-attach-error-text");
+  const showError = () => { errorText.hidden = false; };
+
+  row.querySelector(".trb-attach-view").addEventListener("click", async (e) => {
+    const btn = e.currentTarget;
+    btn.disabled = true;
+    try {
+      const dataUrl = await getAttachmentData(reportId, att);
+      viewAttachment(dataUrl);
+      errorText.hidden = true;
+    } catch { showError(); }
+    finally { btn.disabled = false; }
+  });
+
+  row.querySelector(".trb-attach-download").addEventListener("click", async (e) => {
+    const btn = e.currentTarget;
+    btn.disabled = true;
+    try {
+      const dataUrl = await getAttachmentData(reportId, att);
+      downloadAttachment(dataUrl, att.name);
+      errorText.hidden = true;
+    } catch { showError(); }
+    finally { btn.disabled = false; }
+  });
+
+  if (isImage) {
+    getAttachmentData(reportId, att).then(dataUrl => {
+      const wrap = row.querySelector(".trb-attach-thumb-wrap");
+      wrap.innerHTML = `<img class="trb-attach-thumb" src="${dataUrl}" alt="${escapeHtml(att.name)}" />`;
+      wrap.querySelector("img").addEventListener("click", () => viewAttachment(dataUrl));
+    }).catch(() => {
+      const wrap = row.querySelector(".trb-attach-thumb-wrap");
+      wrap.innerHTML = '<span class="trb-attach-thumb-error">失敗</span>';
+    });
+  }
+
+  return row;
+}
+
+function renderBoard() {
+  const slot = document.getElementById("trb-board-slot");
+  if (state.reports === null || state.staff === null) {
+    slot.innerHTML = '<p class="trb-loading">読み込み中…</p>';
+    return;
+  }
+  if (state.reports.length === 0) {
+    slot.innerHTML = `
+      <div class="trb-empty">
+        <p>まだ研修報告がありません。</p>
+        <button class="trb-btn trb-btn-primary" id="trb-empty-add">最初の報告を投稿する</button>
+      </div>`;
+    document.getElementById("trb-empty-add").addEventListener("click", openNewReportForm);
+    return;
+  }
+  slot.innerHTML = `<div class="trb-grid">${state.reports.map(cardHtml).join("")}</div>`;
+  state.reports.forEach(r => {
+    document.getElementById("card-" + r.id).addEventListener("click", () => openReportDetail(r.id));
+  });
+}
+
+function mountStaffPicker(container, person) {
+  function render() {
+    const floors = Object.keys(STAFF_STRUCTURE);
+    const roles = person.floor ? STAFF_STRUCTURE[person.floor] : [];
+    const names = (person.floor && person.role) ? (state.staff[person.floor][person.role] || []) : [];
+    container.innerHTML = `
+      <div class="trb-picker">
+        <div class="trb-form-row trb-form-row-3">
+          <div>
+            <label class="trb-label">フロア</label>
+            <select class="trb-input" id="pf-floor">
+              <option value="">選択</option>
+              ${floors.map(f => `<option value="${escapeHtml(f)}" ${person.floor === f ? "selected" : ""}>${escapeHtml(f)}</option>`).join("")}
+            </select>
+          </div>
+          <div>
+            <label class="trb-label">職種</label>
+            <select class="trb-input" id="pf-role" ${!person.floor ? "disabled" : ""}>
+              <option value="">選択</option>
+              ${roles.map(r => `<option value="${escapeHtml(r)}" ${person.role === r ? "selected" : ""}>${escapeHtml(r)}</option>`).join("")}
+            </select>
+          </div>
+          <div>
+            <label class="trb-label">氏名</label>
+            <select class="trb-input" id="pf-name" ${!person.role ? "disabled" : ""}>
+              <option value="">選択</option>
+              ${names.map(n => `<option value="${escapeHtml(n)}" ${person.name === n ? "selected" : ""}>${escapeHtml(n)}</option>`).join("")}
+              <option value="__other__" ${person.name === "__other__" ? "selected" : ""}>その他（直接入力）</option>
+            </select>
+          </div>
+        </div>
+        ${person.name === "__other__" ? `
+          <div>
+            <label class="trb-label">氏名を入力</label>
+            <input class="trb-input" id="pf-custom" value="${escapeHtml(person.custom || "")}" placeholder="例：山田 太郎" required />
+          </div>` : ""}
+        ${(person.role && names.length === 0 && person.name !== "__other__") ? '<p class="trb-picker-hint">この職種にはまだ職員が登録されていません。「その他（直接入力）」を選ぶか、設定から追加してください。</p>' : ""}
+      </div>
+    `;
+    container.querySelector("#pf-floor").addEventListener("change", (e) => {
+      person.floor = e.target.value; person.role = ""; person.name = ""; person.custom = "";
+      render();
+    });
+    container.querySelector("#pf-role").addEventListener("change", (e) => {
+      person.role = e.target.value; person.name = ""; person.custom = "";
+      render();
+    });
+    container.querySelector("#pf-name").addEventListener("change", (e) => {
+      person.name = e.target.value;
+      render();
+    });
+    const customInput = container.querySelector("#pf-custom");
+    if (customInput) customInput.addEventListener("input", (e) => { person.custom = e.target.value; });
+  }
+  render();
+}
+
+function openReportDetail(id) {
+  const report = state.reports.find(r => r.id === id);
+  if (!report) return;
+  const overlay = createElement('<div class="trb-overlay"></div>');
+  const panel = createElement('<div class="trb-panel"></div>');
+  overlay.appendChild(panel);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+  function close() { overlay.remove(); }
+
+  panel.innerHTML = `
+    <button class="trb-close" aria-label="閉じる">×</button>
+    <span class="trb-dept">${escapeHtml(report.floor)} ・ ${escapeHtml(report.role)}</span>
+    <h2 class="trb-panel-title">${escapeHtml(report.title)}</h2>
+    <p class="trb-card-meta">${escapeHtml(report.presenter)} ・ ${formatDate(report.date)}</p>
+    <p class="trb-panel-summary">${escapeHtml(report.summary)}</p>
+    ${report.keyPoints && report.keyPoints.length ? `<ul class="trb-points">${report.keyPoints.map(p => `<li>${escapeHtml(p)}</li>`).join("")}</ul>` : ""}
+    ${report.link ? `<p class="trb-link-row">参考URL：<a class="trb-link" href="${escapeHtml(report.link)}" target="_blank" rel="noopener noreferrer">${escapeHtml(report.link)}</a></p>` : ""}
+    ${report.attachments && report.attachments.length ? `
+      <p class="trb-label" style="margin-top:16px;">添付ファイル</p>
+      <div class="trb-attach-list" id="attach-list"></div>
+    ` : ""}
+    <hr class="trb-rule" />
+    <h3 class="trb-comments-heading">感想（<span id="comment-count">${report.comments.length}</span>）</h3>
+    <div id="comment-list-slot"></div>
+    <form class="trb-comment-form" id="comment-form">
+      <label class="trb-label">感想を書く人</label>
+      <div id="comment-picker-slot"></div>
+      <label class="trb-label" for="trb-text">感想</label>
+      <textarea id="trb-text" class="trb-textarea" rows="3" placeholder="読んで感じたこと、質問、共有したいことなど" required></textarea>
+      <p class="trb-share-note">感想は他のメンバー全員に公開されます。</p>
+      <button type="submit" class="trb-btn trb-btn-primary trb-btn-stamp">感想を投稿する</button>
+    </form>
+  `;
+  panel.querySelector(".trb-close").addEventListener("click", close);
+
+  const attachList = panel.querySelector("#attach-list");
+  if (attachList && report.attachments && report.attachments.length) {
+    report.attachments.forEach(att => attachList.appendChild(buildAttachmentRow(report.id, att)));
+  }
+
+  function renderComments() {
+    const listSlot = panel.querySelector("#comment-list-slot");
+    if (report.comments.length === 0) {
+      listSlot.innerHTML = '<p class="trb-no-comments">最初の感想を書いてみましょう。</p>';
+    } else {
+      listSlot.innerHTML = `<ul class="trb-comment-list">${report.comments.map(c => `
+        <li class="trb-comment">
+          ${hankoHtml(c.author, "md")}
+          <div>
+            <p class="trb-comment-author">${escapeHtml(c.author)}</p>
+            <p class="trb-comment-text">${escapeHtml(c.text)}</p>
+          </div>
+        </li>`).join("")}</ul>`;
+    }
+  }
+  renderComments();
+
+  const person = emptyPerson();
+  mountStaffPicker(panel.querySelector("#comment-picker-slot"), person);
+
+  panel.querySelector("#comment-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const author = getPersonName(person);
+    const textEl = panel.querySelector("#trb-text");
+    const text = textEl.value.trim();
+    if (!author || !text) return;
+    report.comments.push({ id: makeId(), author, floor: person.floor, role: person.role, text, createdAt: Date.now() });
+    await persistReports(state.reports);
+    renderComments();
+    panel.querySelector("#comment-count").textContent = report.comments.length;
+    textEl.value = "";
+    renderBoard();
+  });
+
+  document.body.appendChild(overlay);
+}
+
+function openNewReportForm() {
+  const overlay = createElement('<div class="trb-overlay"></div>');
+  const panel = createElement('<div class="trb-panel"></div>');
+  overlay.appendChild(panel);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+  function close() { overlay.remove(); }
+
+  panel.innerHTML = `
+    <button class="trb-close" aria-label="閉じる">×</button>
+    <h2 class="trb-panel-title">研修報告を投稿</h2>
+    <p class="trb-share-note">投稿内容は他のメンバー全員に公開されます。</p>
+    <form class="trb-new-form" id="new-report-form">
+      <label class="trb-label" for="nr-title">研修タイトル</label>
+      <input id="nr-title" class="trb-input" placeholder="例：感染対策研修" required />
+      <label class="trb-label">報告者</label>
+      <div id="nr-picker-slot"></div>
+      <label class="trb-label" for="nr-date">受講日</label>
+      <input id="nr-date" type="date" class="trb-input" />
+      <label class="trb-label" for="nr-summary">研修内容の要約</label>
+      <textarea id="nr-summary" class="trb-textarea" rows="3" required></textarea>
+      <label class="trb-label" for="nr-points">ポイント（1行につき1項目）</label>
+      <textarea id="nr-points" class="trb-textarea" rows="3" placeholder="例：${"\\n"}手袋交換のタイミングを見直す${"\\n"}防護具は各フロアで3日分確保する"></textarea>
+
+      <label class="trb-label" for="nr-link">参考URL（任意）</label>
+      <input id="nr-link" type="url" class="trb-input" placeholder="https://example.com/資料" />
+
+      <label class="trb-label" for="nr-files">添付ファイル（PDF・画像、任意）</label>
+      <input id="nr-files" type="file" class="trb-input" accept="application/pdf,image/*" multiple />
+      <p class="trb-share-note">1ファイルあたり3MBまで。大きい資料は参考URLの共有をおすすめします。</p>
+      <p class="trb-picker-hint" id="nr-file-error" hidden></p>
+      <div class="trb-file-list" id="nr-file-list"></div>
+
+      <div class="trb-form-actions">
+        <button type="button" class="trb-btn" id="nr-cancel">キャンセル</button>
+        <button type="submit" class="trb-btn trb-btn-primary">投稿する</button>
+      </div>
+    </form>
+  `;
+  panel.querySelector(".trb-close").addEventListener("click", close);
+  panel.querySelector("#nr-cancel").addEventListener("click", close);
+
+  const person = emptyPerson();
+  mountStaffPicker(panel.querySelector("#nr-picker-slot"), person);
+
+  let pendingFiles = [];
+  const fileInput = panel.querySelector("#nr-files");
+  const fileListEl = panel.querySelector("#nr-file-list");
+  const fileErrorEl = panel.querySelector("#nr-file-error");
+
+  function renderFileList() {
+    if (pendingFiles.length === 0) { fileListEl.innerHTML = ""; return; }
+    fileListEl.innerHTML = pendingFiles.map(pf => `
+      <div class="trb-file-chip" data-id="${pf.tempId}">
+        <span>${escapeHtml(pf.file.name)}（${formatFileSize(pf.file.size)}）</span>
+        <button type="button" class="trb-chip-remove" data-id="${pf.tempId}" aria-label="削除">×</button>
+      </div>`).join("");
+    fileListEl.querySelectorAll(".trb-chip-remove").forEach(btn => {
+      btn.addEventListener("click", () => {
+        pendingFiles = pendingFiles.filter(pf => pf.tempId !== btn.dataset.id);
+        renderFileList();
+      });
+    });
+  }
+
+  fileInput.addEventListener("change", () => {
+    const files = Array.from(fileInput.files || []);
+    const rejected = [];
+    files.forEach(file => {
+      if (file.size > MAX_FILE_SIZE) { rejected.push(file.name); return; }
+      pendingFiles.push({ tempId: makeId(), file });
+    });
+    fileInput.value = "";
+    renderFileList();
+    if (rejected.length) {
+      fileErrorEl.textContent = `次のファイルは3MBを超えるため追加できませんでした：${rejected.join("、")}`;
+      fileErrorEl.hidden = false;
+    } else {
+      fileErrorEl.hidden = true;
+    }
+  });
+
+  panel.querySelector("#new-report-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const title = panel.querySelector("#nr-title").value.trim();
+    const presenter = getPersonName(person);
+    const date = panel.querySelector("#nr-date").value;
+    const summary = panel.querySelector("#nr-summary").value.trim();
+    const pointsText = panel.querySelector("#nr-points").value;
+    const link = panel.querySelector("#nr-link").value.trim();
+    if (!title || !presenter || !summary || !person.floor || !person.role) return;
+    const keyPoints = pointsText.split("\n").map(s => s.trim()).filter(Boolean);
+
+    const submitBtn = panel.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = "投稿中…";
+
+    const reportId = makeId();
+    const attachments = [];
+    const failedUploads = [];
+    for (const pf of pendingFiles) {
+      try {
+        const dataUrl = await readFileAsDataUrl(pf.file);
+        const attId = makeId();
+        const result = await window.storage.set(attachmentKey(reportId, attId), dataUrl, true);
+        if (!result) throw new Error("save failed");
+        attachments.push({ id: attId, name: pf.file.name, mimeType: pf.file.type || "application/octet-stream", size: pf.file.size });
+      } catch {
+        failedUploads.push(pf.file.name);
+      }
+    }
+
+    const report = { id: reportId, title, floor: person.floor, role: person.role, presenter, date, summary, keyPoints, link, attachments, createdAt: Date.now(), comments: [] };
+    state.reports = [report, ...state.reports];
+    await persistReports(state.reports);
+
+    if (failedUploads.length) {
+      setError(`一部のファイルの保存に失敗しました（${failedUploads.join("、")}）。報告自体は投稿されています。`);
+    }
+    close();
+    renderBoard();
+  });
+
+  document.body.appendChild(overlay);
+}
+
+function openSettings() {
+  const overlay = createElement('<div class="trb-overlay"></div>');
+  const panel = createElement('<div class="trb-panel trb-panel-wide"></div>');
+  overlay.appendChild(panel);
+  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
+  function close() { overlay.remove(); }
+
+  function renderPanel() {
+    panel.innerHTML = `
+      <button class="trb-close" aria-label="閉じる">×</button>
+      <h2 class="trb-panel-title">設定：職員の登録</h2>
+      <p class="trb-share-note">フロアと職種ごとに職員名を登録すると、報告・感想の入力時に選べるようになります。</p>
+      ${Object.entries(STAFF_STRUCTURE).map(([floor, roles]) => `
+        <div class="trb-floor-section">
+          <h3 class="trb-floor-heading">${escapeHtml(floor)}</h3>
+          ${roles.map(role => {
+            const names = state.staff[floor][role] || [];
+            return `
+            <div class="trb-role-block" data-floor="${escapeHtml(floor)}" data-role="${escapeHtml(role)}">
+              <p class="trb-role-heading">${escapeHtml(role)}</p>
+              <div class="trb-chip-row">
+                ${names.length === 0 ? '<span class="trb-no-stamp">未登録</span>' : names.map(n => `
+                  <span class="trb-chip">${escapeHtml(n)}<button type="button" class="trb-chip-remove" data-name="${escapeHtml(n)}" aria-label="${escapeHtml(n)}を削除">×</button></span>
+                `).join("")}
+              </div>
+              <div class="trb-add-row">
+                <input class="trb-input trb-staff-add-input" placeholder="職員名を入力" />
+                <button type="button" class="trb-btn trb-staff-add-btn">追加</button>
+              </div>
+            </div>`;
+          }).join("")}
+        </div>
+      `).join("")}
+    `;
+    panel.querySelector(".trb-close").addEventListener("click", close);
+
+    panel.querySelectorAll(".trb-role-block").forEach(block => {
+      const floor = block.dataset.floor;
+      const role = block.dataset.role;
+      block.querySelectorAll(".trb-chip-remove").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          state.staff[floor][role] = state.staff[floor][role].filter(n => n !== btn.dataset.name);
+          await persistStaff(state.staff);
+          renderPanel();
+        });
+      });
+      const input = block.querySelector(".trb-staff-add-input");
+      const addBtn = block.querySelector(".trb-staff-add-btn");
+      const doAdd = async () => {
+        const value = input.value.trim();
+        if (!value) return;
+        if (!state.staff[floor][role].includes(value)) {
+          state.staff[floor][role] = [...state.staff[floor][role], value];
+          await persistStaff(state.staff);
+        }
+        renderPanel();
+      };
+      addBtn.addEventListener("click", doAdd);
+      input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); doAdd(); } });
+    });
+  }
+  renderPanel();
+  document.body.appendChild(overlay);
+}
+
+document.getElementById("settings-btn").addEventListener("click", openSettings);
+document.getElementById("new-report-btn").addEventListener("click", openNewReportForm);
+
+(async function init() {
+  await Promise.all([loadReports(), loadStaff()]);
+  renderBoard();
+})();
+</script>
+</body>
+</html>
