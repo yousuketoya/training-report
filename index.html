@@ -656,21 +656,32 @@
                         <div class="detail-header">
                             <span id="detail-tag" class="card-tag"></span>
                             <h1 id="detail-title" class="detail-title"></h1>
-                            <div id="detail-author-info" style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #e2e8f0; font-size: 0.85rem; color: #64748b;">
-                                <div style="margin-bottom: 0.4rem;"><span style="font-weight: 600;">作成者：</span><span id="detail-author-name"></span></div>
-                                <div><span style="font-weight: 600;">作成日：</span><span id="detail-created-date"></span></div>
+                            <div id="detail-author-info"
+                                style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #e2e8f0; font-size: 0.85rem; color: #64748b;">
+                                <div style="margin-bottom: 0.4rem;"><span style="font-weight: 600;">作成者：</span><span
+                                        id="detail-author-name"></span></div>
+                                <div><span style="font-weight: 600;">作成日：</span><span id="detail-created-date"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <button id="edit-training-btn" class="btn btn-setting" style="padding: 0.5rem 1rem; white-space: nowrap;">✏️ 編集</button>
+                    <button id="edit-training-btn" class="btn btn-setting"
+                        style="padding: 0.5rem 1rem; white-space: nowrap;">✏️ 編集</button>
                 </div>
 
                 <div class="content-block" style="padding: 0; border: none; background: none; margin-bottom: 0;">
                     <!-- コンテンツ選択タブ -->
-                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; flex-wrap: wrap;">
-                        <button class="content-tab-btn active" data-tab="video" style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #2563eb; border-bottom: 3px solid #2563eb; margin-bottom: -2px;">📹 動画</button>
-                        <button class="content-tab-btn" data-tab="slides" style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #64748b; border-bottom: 3px solid transparent; margin-bottom: -2px;">🖼️ スライド</button>
-                        <button class="content-tab-btn" data-tab="pdf" style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #64748b; border-bottom: 3px solid transparent; margin-bottom: -2px;">📄 PDF</button>
+                    <div
+                        style="display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; flex-wrap: wrap;">
+                        <button class="content-tab-btn active" data-tab="video"
+                            style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #2563eb; border-bottom: 3px solid #2563eb; margin-bottom: -2px;">📹
+                            動画</button>
+                        <button class="content-tab-btn" data-tab="slides"
+                            style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #64748b; border-bottom: 3px solid transparent; margin-bottom: -2px;">🖼️
+                            スライド</button>
+                        <button class="content-tab-btn" data-tab="pdf"
+                            style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #64748b; border-bottom: 3px solid transparent; margin-bottom: -2px;">📄
+                            PDF</button>
                     </div>
 
                     <!-- 動画タブ -->
@@ -706,7 +717,9 @@
                 <!-- 受講者選択・感想入力・完了記録エリア -->
                 <div class="action-area">
                     <div class="form-row-group">
-                        <span id="detail-completion-status" style="font-size: 0.85rem; color: #2563eb; margin-bottom: 0.5rem; cursor: pointer; text-decoration: underline;" onclick="openTrainingStatusModal()"></span>
+                        <span id="detail-completion-status"
+                            style="font-size: 0.85rem; color: #2563eb; margin-bottom: 0.5rem; cursor: pointer; text-decoration: underline;"
+                            onclick="openTrainingStatusModal()"></span>
                         <label>受講者選択（フロア ➔ 職種 ➔ 氏名）:</label>
                         <div class="filter-select-group">
                             <select id="detail-floor-select">
@@ -728,7 +741,8 @@
                             </select>
                         </div>
                         <div id="detail-direct-input-group" style="display: none; width: 100%; margin-top: 0.5rem;">
-                            <input type="text" id="detail-direct-input-name" placeholder="氏名を直接入力" style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem;">
+                            <input type="text" id="detail-direct-input-name" placeholder="氏名を直接入力"
+                                style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem;">
                         </div>
                     </div>
 
@@ -850,7 +864,8 @@
                     </select>
                 </div>
 
-                <button id="confirm-staff-selection-btn" class="btn btn-primary" style="width: 100%; padding: 0.75rem;">選択してログイン</button>
+                <button id="confirm-staff-selection-btn" class="btn btn-primary"
+                    style="width: 100%; padding: 0.75rem;">選択してログイン</button>
             </div>
         </div>
     </div>
@@ -867,12 +882,14 @@
                 <p style="font-size:0.85rem; color:#64748b; margin-bottom:1rem;" id="training-status-title"></p>
 
                 <h3 style="font-size:0.95rem; color:#10b981; margin-top:1rem; margin-bottom:0.75rem;">✅ 研修済み</h3>
-                <div id="completed-staff-list" style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+                <div id="completed-staff-list"
+                    style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
                     <!-- 受講済みの職員が表示されます -->
                 </div>
 
                 <h3 style="font-size:0.95rem; color:#ef4444; margin-bottom:0.75rem;">⏳ 未受講</h3>
-                <div id="incomplete-staff-list" style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; padding: 1rem;">
+                <div id="incomplete-staff-list"
+                    style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; padding: 1rem;">
                     <!-- 未受講の職員が表示されます -->
                 </div>
             </div>
@@ -934,7 +951,8 @@
 
                 <label>
                     スライドURL (Google Slides) / 省略可：
-                    <input type="text" id="edit-input-slides-url" placeholder="https://docs.google.com/presentation/d/..."
+                    <input type="text" id="edit-input-slides-url"
+                        placeholder="https://docs.google.com/presentation/d/..."
                         style="width: 100%; padding: 8px; margin-top: 4px;">
                 </label>
 
@@ -1000,7 +1018,8 @@
 
                 <label>
                     動画URL (YouTube) / 省略可：
-                    <input type="text" id="input-video-url" placeholder="https://www.youtube.com/watch?v=... または https://youtu.be/..."
+                    <input type="text" id="input-video-url"
+                        placeholder="https://www.youtube.com/watch?v=... または https://youtu.be/..."
                         style="width: 100%; padding: 8px; margin-top: 4px;">
                 </label>
 
@@ -1030,7 +1049,7 @@
         // Firebase 初期化
         // ============================================================
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
-        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, setDoc, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
         import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -1053,6 +1072,62 @@
 
         console.log("✅ Firebase 初期化完了");
         console.log("Firestore データベース：", db);
+
+        // グローバルスコープに Firestore 関数を公開
+        window.setDoc = setDoc;
+        window.doc = doc;
+        window.deleteDoc = deleteDoc;
+
+        // ============================================================
+        // Firestore からデータを読み込む関数
+        // ============================================================
+
+        // 職員情報をFirestoreから読み込む
+        async function loadStaffFromFirestore() {
+            try {
+                const staffCollection = collection(db, "staff");
+                const staffSnapshot = await getDocs(staffCollection);
+                const firestoreStaff = [];
+
+                staffSnapshot.forEach((doc) => {
+                    firestoreStaff.push({
+                        id: doc.id,
+                        name: doc.data().name,
+                        floor: doc.data().floor,
+                        role: doc.data().role
+                    });
+                });
+
+                console.log("✅ Firestore から職員情報を読み込み:", firestoreStaff);
+                return firestoreStaff;
+            } catch (error) {
+                console.error("❌ 職員情報読み込みエラー:", error);
+                return [];
+            }
+        }
+
+        // 研修情報をFirestoreから読み込む
+        async function loadTrainingsFromFirestore() {
+            try {
+                const trainingsCollection = collection(db, "trainings");
+                const trainingsSnapshot = await getDocs(trainingsCollection);
+                const firestoreTrainings = {};
+
+                trainingsSnapshot.forEach((doc) => {
+                    firestoreTrainings[doc.id] = doc.data();
+                });
+
+                console.log("✅ Firestore から研修情報を読み込み:", firestoreTrainings);
+                return firestoreTrainings;
+            } catch (error) {
+                console.error("❌ 研修情報読み込みエラー:", error);
+                return {};
+            }
+        }
+
+        // グローバルスコープに公開
+        window.loadStaffFromFirestore = loadStaffFromFirestore;
+        window.loadTrainingsFromFirestore = loadTrainingsFromFirestore;
     </script>
 
     <script>
@@ -1073,14 +1148,14 @@
         const statusMsg = document.getElementById("status-message");
 
         // 研修データ
-        const trainingData = {};
+        let trainingData = {};
 
         let currentActiveKey = null;
 
         // --- 職員データ管理 ---
         const rolesByFloor = {
             "2階": ["看護師長", "看護師", "介護士", "ケアマネージャー"],
-            "1階": ["副施設長", "事務長", "リハビリ", "通所リハ", "栄養士"]
+            "1階": ["副施設長", "事務長", "相談員", "リハビリ", "通所リハ", "栄養士"]
         };
 
         let staffList = JSON.parse(localStorage.getItem("roken_staff_list")) || [];
@@ -1143,7 +1218,7 @@
         const updateDetailInputVisibility = () => {
             const directInputGroup = document.getElementById("detail-direct-input-group");
             const directInputName = document.getElementById("detail-direct-input-name");
-            
+
             if (detailNameSelect.value === "direct-input") {
                 directInputGroup.style.display = "block";
                 directInputName.focus();
@@ -1176,7 +1251,7 @@
         // 職員追加
         const addStaffBtn = document.getElementById("add-staff-btn");
         if (addStaffBtn) {
-            addStaffBtn.addEventListener("click", () => {
+            addStaffBtn.addEventListener("click", async () => {
                 const floor = staffFloorSelect.value;
                 const role = staffRoleSelect.value;
                 const name = staffNameInput.value.trim();
@@ -1186,17 +1261,44 @@
                     return;
                 }
 
-                staffList.push({ floor, role, name });
+                const newStaff = { floor, role, name };
+
+                // LocalStorage に保存
+                staffList.push(newStaff);
                 localStorage.setItem("roken_staff_list", JSON.stringify(staffList));
+
+                // Firestore に保存
+                try {
+                    const staffId = `${floor}_${role}_${name}`.replace(/\s+/g, '_');
+                    await setDoc(doc(db, "staff", staffId), newStaff);
+                    console.log("✅ 職員をFirestoreに保存しました:", name);
+                } catch (error) {
+                    console.error("❌ Firestore保存エラー:", error);
+                    alert("Firestoreへの保存に失敗しました");
+                }
+
                 staffNameInput.value = "";
                 renderStaffTable();
             });
         }
 
         // 職員削除
-        window.deleteStaff = (index) => {
+        window.deleteStaff = async (index) => {
+            const deletingStaff = staffList[index];
+
+            // LocalStorage から削除
             staffList.splice(index, 1);
             localStorage.setItem("roken_staff_list", JSON.stringify(staffList));
+
+            // Firestore からも削除
+            try {
+                const staffId = `${deletingStaff.floor}_${deletingStaff.role}_${deletingStaff.name}`.replace(/\s+/g, '_');
+                await deleteDoc(doc(db, "staff", staffId));
+                console.log("✅ 職員をFirestoreから削除しました:", deletingStaff.name);
+            } catch (error) {
+                console.error("❌ Firestore削除エラー:", error);
+            }
+
             renderStaffTable();
         };
 
@@ -1283,7 +1385,7 @@
                 const completedCount = historyList.filter(item => item.trainingTitle === training.title).length;
                 const totalStaffCount = staffList.length;
                 const completionText = `（${completedCount}/${totalStaffCount}人）研修済み`;
-                
+
                 const card = document.getElementById(`card-${currentActiveKey}`);
                 if (card) {
                     const completionSpan = card.querySelector('.card-footer span');
@@ -1382,7 +1484,7 @@
 
             // 受講済み職員リスト（感想付き）
             const completedList = staffList.filter(staff => completedStaffNames.has(staff.name));
-            const completedHtml = completedList.length > 0 
+            const completedHtml = completedList.length > 0
                 ? completedList.map(staff => {
                     const record = completedStaffRecords.find(r => r.staffName === staff.name);
                     const comment = record ? record.comment : "";
@@ -1437,10 +1539,10 @@
                 const data = trainingData[currentActiveKey];
 
                 // フォーム値を入力
-                const [tagClass, tagText] = data.tagClass && data.tagText 
+                const [tagClass, tagText] = data.tagClass && data.tagText
                     ? [data.tagClass, data.tagText]
                     : ["tag-mandatory", "研修報告"];
-                
+
                 document.getElementById("edit-input-tag-class").value = `${tagClass}|${tagText}`;
                 document.getElementById("edit-input-title").value = data.title || "";
                 document.getElementById("edit-input-summary").value = data.summary || data.description || "";
@@ -1495,7 +1597,7 @@
         }
 
         if (saveEditTrainingBtn) {
-            saveEditTrainingBtn.addEventListener("click", () => {
+            saveEditTrainingBtn.addEventListener("click", async () => {
                 if (!currentActiveKey) return;
 
                 const title = document.getElementById("edit-input-title").value.trim();
@@ -1548,6 +1650,15 @@
                 customTrainings[currentActiveKey] = updatedTraining;
                 localStorage.setItem("roken_custom_trainings", JSON.stringify(customTrainings));
 
+                // Firestore に保存
+                try {
+                    await setDoc(doc(db, "trainings", currentActiveKey), updatedTraining);
+                    console.log("✅ 研修をFirestoreに更新しました:", title);
+                } catch (error) {
+                    console.error("❌ Firestore更新エラー:", error);
+                    alert("Firestoreへの更新に失敗しました");
+                }
+
                 // 詳細ページを更新
                 openDetail(currentActiveKey);
 
@@ -1597,7 +1708,7 @@
             document.getElementById("detail-title").textContent = data.title;
             document.getElementById("detail-video").src = convertYoutubeUrl(data.videoUrl) || "";
             document.getElementById("detail-slides").src = convertGoogleSlidesUrl(data.slidesUrl) || "";
-            
+
             // descriptionがない場合はsummaryを使用
             document.getElementById("detail-description").textContent = data.description || data.summary || "";
 
@@ -1698,6 +1809,30 @@
             }
             isLoggedIn = true;
             showMessage("ログインしました");
+
+            // Firestore からデータを読み込み
+            (async () => {
+                try {
+                    const firestoreStaff = await loadStaffFromFirestore();
+                    if (firestoreStaff.length > 0) {
+                        staffList = firestoreStaff;
+                        console.log("✅ Firestore の職員情報を使用");
+                    }
+
+                    const firestoreTrainings = await loadTrainingsFromFirestore();
+                    if (Object.keys(firestoreTrainings).length > 0) {
+                        Object.assign(trainingData, firestoreTrainings);
+                        console.log("✅ Firestore の研修情報を使用");
+                    }
+
+                    updateDetailRoleOptions();
+
+                    console.log("📊 ログイン後データ準備完了");
+                } catch (error) {
+                    console.error("❌ データ読み込みエラー:", error);
+                }
+            })();
+
             setTimeout(() => {
                 loginWrapper.style.display = "none";
                 portalContainer.style.display = "block";
@@ -1737,8 +1872,26 @@
 
         const googleLoginBtn = document.getElementById("google-login-btn");
         if (googleLoginBtn) {
-            googleLoginBtn.addEventListener("click", () => {
+            googleLoginBtn.addEventListener("click", async () => {
                 clearMessage();
+
+                // Firestore からデータを読み込み
+                try {
+                    const firestoreStaff = await loadStaffFromFirestore();
+                    if (firestoreStaff.length > 0) {
+                        staffList = firestoreStaff;
+                        console.log("✅ Firestore の職員情報を使用（Google ログイン）");
+                    }
+
+                    const firestoreTrainings = await loadTrainingsFromFirestore();
+                    if (Object.keys(firestoreTrainings).length > 0) {
+                        Object.assign(trainingData, firestoreTrainings);
+                        console.log("✅ Firestore の研修情報を使用（Google ログイン）");
+                    }
+                } catch (error) {
+                    console.error("❌ データ読み込みエラー:", error);
+                }
+
                 // 職員選択モーダルを表示
                 const staffSelectionFloor = document.getElementById("staff-selection-floor");
                 const staffSelectionRole = document.getElementById("staff-selection-role");
@@ -1838,17 +1991,17 @@
         const renderTrainingCard = (key, data) => {
             if (!trainingGrid) return;
             const cardDesc = data.description || data.summary || "";
-            
+
             // 説明文を180文字で省略
-            const truncatedDesc = cardDesc.length > 180 
-                ? cardDesc.substring(0, 180) + "..." 
+            const truncatedDesc = cardDesc.length > 180
+                ? cardDesc.substring(0, 180) + "..."
                 : cardDesc;
-            
+
             // 受講人数を計算
             const completedCount = historyList.filter(item => item.trainingTitle === data.title).length;
             const totalStaffCount = staffList.length;
             const completionText = `（${completedCount}/${totalStaffCount}人）研修済み`;
-            
+
             const cardHtml = `
             <div class="training-card" id="card-${key}">
                 <div class="card-body" onclick="openDetail('${key}')" style="cursor: pointer;">
@@ -1936,7 +2089,7 @@
 
         // 保存ボタン押下時
         if (saveTrainingBtn) {
-            saveTrainingBtn.addEventListener("click", () => {
+            saveTrainingBtn.addEventListener("click", async () => {
                 const title = document.getElementById("input-title").value.trim();
                 const summary = document.getElementById("input-summary").value.trim();
                 const authorFloor = document.getElementById("input-author-floor").value.trim();
@@ -1987,6 +2140,15 @@
                 trainingData[newKey] = newTraining;
                 customTrainings[newKey] = newTraining;
                 localStorage.setItem("roken_custom_trainings", JSON.stringify(customTrainings));
+
+                // Firestore に保存
+                try {
+                    await setDoc(doc(db, "trainings", newKey), newTraining);
+                    console.log("✅ 研修をFirestoreに保存しました:", title);
+                } catch (error) {
+                    console.error("❌ Firestore保存エラー:", error);
+                    alert("Firestoreへの保存に失敗しました");
+                }
 
                 // 画面上にカードを追加
                 renderTrainingCard(newKey, newTraining);
