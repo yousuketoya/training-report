@@ -1,956 +1,1983 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>研修報告 回覧板</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
-
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: #EEF0EA;
-  font-family: 'Noto Sans JP', sans-serif;
-}
-
-:root {
-  --paper: #EEF0EA;
-  --card: #FBFAF5;
-  --ink: #202A25;
-  --navy: #22384B;
-  --vermillion: #B23A2E;
-  --gold: #A9822E;
-  --line: #D8D3C4;
-}
-
-.trb-app {
-  color: var(--ink);
-  background: var(--paper);
-  padding: 28px 24px 40px;
-  max-width: 980px;
-  margin: 0 auto;
-}
-
-.trb-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 16px;
-  flex-wrap: wrap;
-  border-bottom: 2px solid var(--navy);
-  padding-bottom: 16px;
-  margin-bottom: 24px;
-}
-.trb-header-actions { display: flex; gap: 10px; }
-.trb-eyebrow { margin: 0 0 4px; font-size: 12px; letter-spacing: 0.12em; color: var(--navy); font-weight: 700; }
-.trb-title {
-  margin: 0 0 6px;
-  font-family: 'Shippori Mincho', serif;
-  font-weight: 700;
-  font-size: clamp(24px, 4vw, 34px);
-  color: var(--navy);
-}
-.trb-sub { margin: 0; font-size: 14px; color: #55605A; max-width: 46ch; }
-
-.trb-btn {
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: 700;
-  padding: 10px 18px;
-  border-radius: 8px;
-  border: 1.5px solid var(--navy);
-  background: transparent;
-  color: var(--navy);
-  cursor: pointer;
-  white-space: nowrap;
-}
-.trb-btn:hover { background: rgba(34,56,75,0.06); }
-.trb-btn:focus-visible { outline: 2px solid var(--vermillion); outline-offset: 2px; }
-.trb-btn-primary { background: var(--navy); color: #fff; }
-.trb-btn-primary:hover { background: #1a2c3b; }
-
-.trb-banner {
-  background: #FBEAE8;
-  border: 1px solid var(--vermillion);
-  color: #7A281F;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 13px;
-  margin-bottom: 16px;
-}
-
-.trb-loading, .trb-empty { text-align: center; padding: 48px 0; color: #55605A; }
-.trb-empty p { margin-bottom: 16px; }
-
-.trb-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 16px;
-}
-
-.trb-card {
-  position: relative;
-  text-align: left;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 20px 16px 16px;
-  cursor: pointer;
-  font-family: inherit;
-  color: inherit;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
-  width: 100%;
-}
-.trb-card:hover { box-shadow: 0 6px 16px rgba(34,56,75,0.12); transform: translateY(-2px); }
-.trb-card:focus-visible { outline: 2px solid var(--vermillion); outline-offset: 2px; }
-@media (prefers-reduced-motion: reduce) {
-  .trb-card { transition: none; }
-  .trb-card:hover { transform: none; }
-}
-
-.trb-pin { position: absolute; top: -6px; left: 20px; width: 12px; height: 12px; border-radius: 50%; background: var(--navy); }
-
-.trb-dept {
-  align-self: flex-start;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: var(--navy);
-  background: rgba(34,56,75,0.08);
-  padding: 3px 8px;
-  border-radius: 100px;
-}
-.trb-card-title { margin: 0; font-family: 'Shippori Mincho', serif; font-size: 18px; font-weight: 700; line-height: 1.4; }
-.trb-card-meta { margin: 0; font-size: 12px; color: #6B756E; }
-.trb-card-summary {
-  margin: 0;
-  font-size: 13px;
-  color: #454F49;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.trb-stamp-row { display: flex; align-items: center; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
-.trb-no-stamp { font-size: 12px; color: #8A9089; }
-.trb-stamp-extra { font-size: 11px; color: #6B756E; margin-left: 2px; }
-
-.trb-hanko {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid var(--vermillion);
-  color: var(--vermillion);
-  border-radius: 50%;
-  font-family: 'Shippori Mincho', serif;
-  font-weight: 700;
-  background: rgba(178,58,46,0.06);
-  mix-blend-mode: multiply;
-  flex-shrink: 0;
-}
-.trb-hanko-sm { width: 22px; height: 22px; font-size: 11px; }
-.trb-hanko-md { width: 34px; height: 34px; font-size: 15px; }
-
-.trb-footnote { margin-top: 24px; font-size: 12px; color: #8A9089; }
-.trb-saving { color: var(--gold); font-weight: 700; }
-
-.trb-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(32,42,37,0.45);
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 40px 16px;
-  overflow-y: auto;
-  z-index: 50;
-}
-.trb-panel { background: var(--card); border-radius: 12px; max-width: 560px; width: 100%; padding: 28px 24px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.25); }
-.trb-panel-wide { max-width: 640px; }
-.trb-close {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  background: none;
-  border: none;
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-  color: var(--navy);
-  padding: 4px 8px;
-  border-radius: 6px;
-}
-.trb-close:hover { background: rgba(34,56,75,0.08); }
-.trb-close:focus-visible { outline: 2px solid var(--vermillion); }
-
-.trb-panel-title { font-family: 'Shippori Mincho', serif; font-size: 22px; margin: 10px 0 4px; color: var(--navy); }
-.trb-panel-summary { font-size: 14px; line-height: 1.7; margin: 12px 0; }
-.trb-points { margin: 0 0 8px; padding-left: 20px; font-size: 14px; line-height: 1.8; }
-.trb-rule { border: none; border-top: 1px solid var(--line); margin: 20px 0; }
-.trb-comments-heading { font-size: 15px; margin: 0 0 12px; color: var(--navy); }
-.trb-no-comments { font-size: 13px; color: #8A9089; margin-bottom: 16px; }
-
-.trb-comment-list { list-style: none; margin: 0 0 20px; padding: 0; display: flex; flex-direction: column; gap: 14px; }
-.trb-comment { display: flex; gap: 12px; align-items: flex-start; }
-.trb-comment-author { margin: 0 0 2px; font-size: 13px; font-weight: 700; color: var(--navy); }
-.trb-comment-text { margin: 0; font-size: 13px; line-height: 1.7; }
-
-.trb-label { display: block; font-size: 12px; font-weight: 700; color: var(--navy); margin: 12px 0 4px; }
-.trb-input, .trb-textarea {
-  width: 100%;
-  font-family: inherit;
-  font-size: 14px;
-  padding: 9px 11px;
-  border: 1px solid var(--line);
-  border-radius: 7px;
-  background: #fff;
-  color: var(--ink);
-}
-.trb-input:focus-visible, .trb-textarea:focus-visible { outline: 2px solid var(--vermillion); outline-offset: 1px; }
-.trb-textarea { resize: vertical; }
-.trb-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.trb-form-row-3 { grid-template-columns: 1fr 1fr 1fr; }
-.trb-share-note { font-size: 12px; color: #8A9089; margin: 10px 0; }
-.trb-form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
-.trb-btn-stamp { margin-top: 14px; }
-.trb-picker { margin-bottom: 4px; }
-.trb-picker-hint { font-size: 12px; color: var(--gold); margin: 6px 0 0; }
-
-.trb-floor-section { margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--line); }
-.trb-floor-section:first-of-type { border-top: none; margin-top: 0; }
-.trb-floor-heading { font-family: 'Shippori Mincho', serif; font-size: 18px; color: var(--navy); margin: 0 0 10px; }
-.trb-role-block { margin-bottom: 16px; }
-.trb-role-heading { font-size: 13px; font-weight: 700; margin: 0 0 6px; color: var(--ink); }
-.trb-chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
-.trb-chip { display: inline-flex; align-items: center; gap: 4px; background: rgba(34,56,75,0.08); color: var(--navy); font-size: 12px; padding: 4px 6px 4px 10px; border-radius: 100px; }
-.trb-chip-remove { background: none; border: none; color: var(--vermillion); font-size: 14px; line-height: 1; cursor: pointer; padding: 2px 4px; }
-.trb-add-row { display: flex; gap: 8px; }
-.trb-add-row .trb-input { flex: 1; }
-
-.trb-link-row { font-size: 13px; margin: 10px 0; }
-.trb-link { color: var(--vermillion); word-break: break-all; }
-
-.trb-file-list { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
-.trb-file-chip {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  background: rgba(34,56,75,0.06);
-  border-radius: 7px;
-  padding: 6px 6px 6px 12px;
-  font-size: 12px;
-  color: var(--ink);
-}
-
-.trb-attach-list { display: flex; flex-direction: column; gap: 12px; margin: 8px 0 4px; }
-.trb-attach-item {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  background: rgba(34,56,75,0.04);
-  border: 1px solid var(--line);
-  border-radius: 9px;
-  padding: 10px;
-}
-.trb-attach-icon {
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  background: rgba(34,56,75,0.08);
-  border-radius: 7px;
-}
-.trb-attach-thumb-wrap {
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
-  border-radius: 7px;
-  overflow: hidden;
-  background: rgba(34,56,75,0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.trb-attach-thumb { width: 100%; height: 100%; object-fit: cover; cursor: pointer; }
-.trb-attach-thumb-loading, .trb-attach-thumb-error { font-size: 10px; color: #6B756E; text-align: center; padding: 2px; }
-.trb-attach-meta { flex: 1; min-width: 0; }
-.trb-attach-name { margin: 0; font-size: 13px; font-weight: 700; word-break: break-all; }
-.trb-attach-size { margin: 2px 0 6px; font-size: 11px; color: #6B756E; }
-.trb-attach-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.trb-attach-actions .trb-btn { padding: 5px 12px; font-size: 12px; }
-.trb-attach-error-text { font-size: 11px; color: var(--vermillion); margin: 4px 0 0; }
-
-@media (max-width: 480px) {
-  .trb-app { padding: 20px 14px 32px; }
-  .trb-form-row, .trb-form-row-3 { grid-template-columns: 1fr; }
-}
-</style>
-</head>
-<body>
-<div class="trb-app">
-  <header class="trb-header">
-    <div>
-      <p class="trb-eyebrow">社内研修共有</p>
-      <h1 class="trb-title">研修報告 回覧板</h1>
-      <p class="trb-sub">紙の回覧では一人しか読めなかった報告書を、ここでは全員が読んで感想を残せます。</p>
-    </div>
-    <div class="trb-header-actions">
-      <button class="trb-btn" id="settings-btn">⚙ 設定</button>
-      <button class="trb-btn trb-btn-primary" id="new-report-btn">＋ 報告を投稿</button>
-    </div>
-  </header>
-  <div id="trb-banner-slot"></div>
-  <div id="trb-board-slot"><p class="trb-loading">読み込み中…</p></div>
-  <p class="trb-footnote">※ ここに投稿した内容と感想は、このアプリを利用する社内メンバー全員に共有されます。<span id="trb-saving-slot"></span></p>
-</div>
-
-<script>
-const REPORTS_KEY = "training-reports-v2";
-const STAFF_KEY = "training-report-staff-v1";
-
-const STAFF_STRUCTURE = {
-  "2階": ["看護師長", "看護師", "介護士"],
-  "1階": ["副施設長", "事務長", "相談員", "事務員", "リハビリ", "通所リハビリ", "ホットルーム"],
-};
-
-function defaultStaff() {
-  const base = {};
-  for (const floor of Object.keys(STAFF_STRUCTURE)) {
-    base[floor] = {};
-    for (const role of STAFF_STRUCTURE[floor]) base[floor][role] = [];
-  }
-  base["2階"]["看護師長"] = ["田中 恵子"];
-  base["2階"]["看護師"] = ["佐藤 直樹"];
-  base["2階"]["介護士"] = ["鈴木 舞"];
-  base["1階"]["事務長"] = ["高橋 誠"];
-  return base;
-}
-
-function hashSeed(str) {
-  let h = 0;
-  const s = str || "?";
-  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 1000;
-  return h;
-}
-function stampRotation(seed) { return (hashSeed(seed) % 13) - 6; }
-
-function formatDate(dateStr) {
-  if (!dateStr) return "";
-  try {
-    return new Date(dateStr).toLocaleDateString("ja-JP", { year: "numeric", month: "long", day: "numeric" });
-  } catch { return dateStr; }
-}
-
-function makeId() { return Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 7); }
-
-function getPersonName(person) {
-  if (!person) return "";
-  return person.name === "__other__" ? (person.custom || "").trim() : (person.name || "").trim();
-}
-function emptyPerson() { return { floor: "", role: "", name: "", custom: "" }; }
-
-function escapeHtml(str) {
-  const div = document.createElement("div");
-  div.textContent = str == null ? "" : String(str);
-  return div.innerHTML;
-}
-
-function createElement(html) {
-  const template = document.createElement("template");
-  template.innerHTML = html.trim();
-  return template.content.firstElementChild;
-}
-
-const MAX_FILE_SIZE = 3.5 * 1024 * 1024; // leave headroom under the 5MB storage limit once base64-encoded
-const attachmentCache = {};
-
-function attachmentKey(reportId, attId) { return `attachment-${reportId}-${attId}`; }
-
-function formatFileSize(bytes) {
-  if (bytes == null) return "";
-  if (bytes < 1024) return bytes + " B";
-  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
-  return (bytes / 1024 / 1024).toFixed(1) + " MB";
-}
-
-function readFileAsDataUrl(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = () => reject(reader.error);
-    reader.readAsDataURL(file);
-  });
-}
-
-function dataUrlToBlob(dataUrl) {
-  const [header, base64] = dataUrl.split(",");
-  const mimeMatch = header.match(/data:(.*);base64/);
-  const mime = mimeMatch ? mimeMatch[1] : "application/octet-stream";
-  const binary = atob(base64);
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-  return new Blob([bytes], { type: mime });
-}
-
-async function getAttachmentData(reportId, attachment) {
-  const key = attachmentKey(reportId, attachment.id);
-  if (attachmentCache[key]) return attachmentCache[key];
-  const result = await window.storage.get(key, true);
-  if (!result) throw new Error("attachment not found");
-  attachmentCache[key] = result.value;
-  return result.value;
-}
-
-function viewAttachment(dataUrl) {
-  const blob = dataUrlToBlob(dataUrl);
-  const url = URL.createObjectURL(blob);
-  window.open(url, "_blank", "noopener");
-  setTimeout(() => URL.revokeObjectURL(url), 60000);
-}
-
-function downloadAttachment(dataUrl, filename) {
-  const blob = dataUrlToBlob(dataUrl);
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 5000);
-}
-
-const SEED_REPORTS = [
-  {
-    id: makeId(),
-    title: "感染対策研修 受講報告",
-    floor: "2階",
-    role: "看護師",
-    presenter: "佐藤 直樹",
-    date: "2026-07-14",
-    summary: "外部講師による感染対策研修に参加。標準予防策の徹底と、フロアごとの防護具の使い分けについて学んだ。",
-    keyPoints: [
-      "手袋交換のタイミングを見直す必要がある",
-      "個人防護具の在庫は各フロアで最低3日分を確保する",
-      "次回はフロア合同での実技演習を提案したい",
-    ],
-    link: "",
-    attachments: [],
-    createdAt: Date.now() - 1000 * 60 * 60 * 24 * 2,
-    comments: [
-      { id: makeId(), author: "田中 恵子", text: "2階でも同じ課題が出ていたので参考になりました。実技演習ぜひやりましょう。", createdAt: Date.now() - 1000 * 60 * 60 * 20 },
-    ],
-  },
-  {
-    id: makeId(),
-    title: "レクリエーション企画研修 受講報告",
-    floor: "2階",
-    role: "介護士",
-    presenter: "鈴木 舞",
-    date: "2026-07-28",
-    summary: "季節行事を取り入れたレクリエーションの企画研修を受講。参加度を高める声かけの工夫が中心だった。",
-    keyPoints: ["少人数グループに分けると参加率が上がる", "職種を問わず声かけの型を共有すると効果的"],
-    link: "",
-    attachments: [],
-    createdAt: Date.now() - 1000 * 60 * 60 * 24 * 5,
-    comments: [],
-  },
-];
-
-const state = { reports: null, staff: null, saving: false };
-
-function setError(msg) {
-  const slot = document.getElementById("trb-banner-slot");
-  slot.innerHTML = msg ? `<div class="trb-banner">${escapeHtml(msg)}</div>` : "";
-}
-function updateSavingIndicator() {
-  const slot = document.getElementById("trb-saving-slot");
-  slot.textContent = state.saving ? " 保存中…" : "";
-}
-
-async function persistReports(next) {
-  state.reports = next;
-  state.saving = true; updateSavingIndicator();
-  try {
-    const result = await window.storage.set(REPORTS_KEY, JSON.stringify(next), true);
-    if (!result) throw new Error("no result");
-    setError(null);
-  } catch { setError("保存に失敗しました。通信環境を確認してもう一度お試しください。"); }
-  finally { state.saving = false; updateSavingIndicator(); }
-}
-
-async function persistStaff(next) {
-  state.staff = next;
-  state.saving = true; updateSavingIndicator();
-  try {
-    const result = await window.storage.set(STAFF_KEY, JSON.stringify(next), true);
-    if (!result) throw new Error("no result");
-    setError(null);
-  } catch { setError("職員データの保存に失敗しました。"); }
-  finally { state.saving = false; updateSavingIndicator(); }
-}
-
-async function loadReports() {
-  try {
-    const result = await window.storage.get(REPORTS_KEY, true);
-    state.reports = result ? JSON.parse(result.value) : SEED_REPORTS;
-    if (!result) await window.storage.set(REPORTS_KEY, JSON.stringify(SEED_REPORTS), true);
-  } catch {
-    state.reports = SEED_REPORTS;
-    setError("保存データの読み込みに失敗したため、サンプルを表示しています。");
-  }
-}
-async function loadStaff() {
-  try {
-    const result = await window.storage.get(STAFF_KEY, true);
-    state.staff = result ? JSON.parse(result.value) : defaultStaff();
-    if (!result) await window.storage.set(STAFF_KEY, JSON.stringify(defaultStaff()), true);
-  } catch {
-    state.staff = defaultStaff();
-    setError("職員データの読み込みに失敗したため、サンプルを表示しています。");
-  }
-}
-
-function hankoHtml(name, size) {
-  const initial = (name || "?").trim().charAt(0) || "?";
-  const rot = stampRotation(name);
-  return `<span class="trb-hanko trb-hanko-${size}" style="transform:rotate(${rot}deg)" title="${escapeHtml(name)}">${escapeHtml(initial)}</span>`;
-}
-
-function cardHtml(r) {
-  const shown = r.comments.slice(0, 4);
-  const extra = r.comments.length - shown.length;
-  const stampsHtml = shown.length === 0
-    ? '<span class="trb-no-stamp">まだ感想なし</span>'
-    : shown.map(c => hankoHtml(c.author, "sm")).join("") + (extra > 0 ? `<span class="trb-stamp-extra">+${extra}</span>` : "");
-  return `
-    <button class="trb-card" id="card-${r.id}">
-      <span class="trb-pin" aria-hidden="true"></span>
-      <span class="trb-dept">${escapeHtml(r.floor)} ・ ${escapeHtml(r.role)}${(r.attachments && r.attachments.length) || r.link ? " ・ 📎" : ""}</span>
-      <h2 class="trb-card-title">${escapeHtml(r.title)}</h2>
-      <p class="trb-card-meta">${escapeHtml(r.presenter)} ・ ${formatDate(r.date)}</p>
-      <p class="trb-card-summary">${escapeHtml(r.summary)}</p>
-      <div class="trb-stamp-row">${stampsHtml}</div>
-    </button>`;
-}
-
-function buildAttachmentRow(reportId, att) {
-  const isImage = att.mimeType && att.mimeType.startsWith("image/");
-  const row = createElement(`
-    <div class="trb-attach-item">
-      ${isImage ? '<div class="trb-attach-thumb-wrap"><span class="trb-attach-thumb-loading">読込中</span></div>' : '<div class="trb-attach-icon">📄</div>'}
-      <div class="trb-attach-meta">
-        <p class="trb-attach-name">${escapeHtml(att.name)}</p>
-        <p class="trb-attach-size">${formatFileSize(att.size)}</p>
-        <div class="trb-attach-actions">
-          <button type="button" class="trb-btn trb-attach-view">表示</button>
-          <button type="button" class="trb-btn trb-attach-download">ダウンロード</button>
-        </div>
-        <p class="trb-attach-error-text" hidden>読み込みに失敗しました。</p>
-      </div>
-    </div>
-  `);
-
-  const errorText = row.querySelector(".trb-attach-error-text");
-  const showError = () => { errorText.hidden = false; };
-
-  row.querySelector(".trb-attach-view").addEventListener("click", async (e) => {
-    const btn = e.currentTarget;
-    btn.disabled = true;
-    try {
-      const dataUrl = await getAttachmentData(reportId, att);
-      viewAttachment(dataUrl);
-      errorText.hidden = true;
-    } catch { showError(); }
-    finally { btn.disabled = false; }
-  });
-
-  row.querySelector(".trb-attach-download").addEventListener("click", async (e) => {
-    const btn = e.currentTarget;
-    btn.disabled = true;
-    try {
-      const dataUrl = await getAttachmentData(reportId, att);
-      downloadAttachment(dataUrl, att.name);
-      errorText.hidden = true;
-    } catch { showError(); }
-    finally { btn.disabled = false; }
-  });
-
-  if (isImage) {
-    getAttachmentData(reportId, att).then(dataUrl => {
-      const wrap = row.querySelector(".trb-attach-thumb-wrap");
-      wrap.innerHTML = `<img class="trb-attach-thumb" src="${dataUrl}" alt="${escapeHtml(att.name)}" />`;
-      wrap.querySelector("img").addEventListener("click", () => viewAttachment(dataUrl));
-    }).catch(() => {
-      const wrap = row.querySelector(".trb-attach-thumb-wrap");
-      wrap.innerHTML = '<span class="trb-attach-thumb-error">失敗</span>';
-    });
-  }
-
-  return row;
-}
-
-function renderBoard() {
-  const slot = document.getElementById("trb-board-slot");
-  if (state.reports === null || state.staff === null) {
-    slot.innerHTML = '<p class="trb-loading">読み込み中…</p>';
-    return;
-  }
-  if (state.reports.length === 0) {
-    slot.innerHTML = `
-      <div class="trb-empty">
-        <p>まだ研修報告がありません。</p>
-        <button class="trb-btn trb-btn-primary" id="trb-empty-add">最初の報告を投稿する</button>
-      </div>`;
-    document.getElementById("trb-empty-add").addEventListener("click", openNewReportForm);
-    return;
-  }
-  slot.innerHTML = `<div class="trb-grid">${state.reports.map(cardHtml).join("")}</div>`;
-  state.reports.forEach(r => {
-    document.getElementById("card-" + r.id).addEventListener("click", () => openReportDetail(r.id));
-  });
-}
-
-function mountStaffPicker(container, person) {
-  function render() {
-    const floors = Object.keys(STAFF_STRUCTURE);
-    const roles = person.floor ? STAFF_STRUCTURE[person.floor] : [];
-    const names = (person.floor && person.role) ? (state.staff[person.floor][person.role] || []) : [];
-    container.innerHTML = `
-      <div class="trb-picker">
-        <div class="trb-form-row trb-form-row-3">
-          <div>
-            <label class="trb-label">フロア</label>
-            <select class="trb-input" id="pf-floor">
-              <option value="">選択</option>
-              ${floors.map(f => `<option value="${escapeHtml(f)}" ${person.floor === f ? "selected" : ""}>${escapeHtml(f)}</option>`).join("")}
-            </select>
-          </div>
-          <div>
-            <label class="trb-label">職種</label>
-            <select class="trb-input" id="pf-role" ${!person.floor ? "disabled" : ""}>
-              <option value="">選択</option>
-              ${roles.map(r => `<option value="${escapeHtml(r)}" ${person.role === r ? "selected" : ""}>${escapeHtml(r)}</option>`).join("")}
-            </select>
-          </div>
-          <div>
-            <label class="trb-label">氏名</label>
-            <select class="trb-input" id="pf-name" ${!person.role ? "disabled" : ""}>
-              <option value="">選択</option>
-              ${names.map(n => `<option value="${escapeHtml(n)}" ${person.name === n ? "selected" : ""}>${escapeHtml(n)}</option>`).join("")}
-              <option value="__other__" ${person.name === "__other__" ? "selected" : ""}>その他（直接入力）</option>
-            </select>
-          </div>
-        </div>
-        ${person.name === "__other__" ? `
-          <div>
-            <label class="trb-label">氏名を入力</label>
-            <input class="trb-input" id="pf-custom" value="${escapeHtml(person.custom || "")}" placeholder="例：山田 太郎" required />
-          </div>` : ""}
-        ${(person.role && names.length === 0 && person.name !== "__other__") ? '<p class="trb-picker-hint">この職種にはまだ職員が登録されていません。「その他（直接入力）」を選ぶか、設定から追加してください。</p>' : ""}
-      </div>
-    `;
-    container.querySelector("#pf-floor").addEventListener("change", (e) => {
-      person.floor = e.target.value; person.role = ""; person.name = ""; person.custom = "";
-      render();
-    });
-    container.querySelector("#pf-role").addEventListener("change", (e) => {
-      person.role = e.target.value; person.name = ""; person.custom = "";
-      render();
-    });
-    container.querySelector("#pf-name").addEventListener("change", (e) => {
-      person.name = e.target.value;
-      render();
-    });
-    const customInput = container.querySelector("#pf-custom");
-    if (customInput) customInput.addEventListener("input", (e) => { person.custom = e.target.value; });
-  }
-  render();
-}
-
-function openReportDetail(id) {
-  const report = state.reports.find(r => r.id === id);
-  if (!report) return;
-  const overlay = createElement('<div class="trb-overlay"></div>');
-  const panel = createElement('<div class="trb-panel"></div>');
-  overlay.appendChild(panel);
-  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
-  function close() { overlay.remove(); }
-
-  panel.innerHTML = `
-    <button class="trb-close" aria-label="閉じる">×</button>
-    <span class="trb-dept">${escapeHtml(report.floor)} ・ ${escapeHtml(report.role)}</span>
-    <h2 class="trb-panel-title">${escapeHtml(report.title)}</h2>
-    <p class="trb-card-meta">${escapeHtml(report.presenter)} ・ ${formatDate(report.date)}</p>
-    <p class="trb-panel-summary">${escapeHtml(report.summary)}</p>
-    ${report.keyPoints && report.keyPoints.length ? `<ul class="trb-points">${report.keyPoints.map(p => `<li>${escapeHtml(p)}</li>`).join("")}</ul>` : ""}
-    ${report.link ? `<p class="trb-link-row">参考URL：<a class="trb-link" href="${escapeHtml(report.link)}" target="_blank" rel="noopener noreferrer">${escapeHtml(report.link)}</a></p>` : ""}
-    ${report.attachments && report.attachments.length ? `
-      <p class="trb-label" style="margin-top:16px;">添付ファイル</p>
-      <div class="trb-attach-list" id="attach-list"></div>
-    ` : ""}
-    <hr class="trb-rule" />
-    <h3 class="trb-comments-heading">感想（<span id="comment-count">${report.comments.length}</span>）</h3>
-    <div id="comment-list-slot"></div>
-    <form class="trb-comment-form" id="comment-form">
-      <label class="trb-label">感想を書く人</label>
-      <div id="comment-picker-slot"></div>
-      <label class="trb-label" for="trb-text">感想</label>
-      <textarea id="trb-text" class="trb-textarea" rows="3" placeholder="読んで感じたこと、質問、共有したいことなど" required></textarea>
-      <p class="trb-share-note">感想は他のメンバー全員に公開されます。</p>
-      <button type="submit" class="trb-btn trb-btn-primary trb-btn-stamp">感想を投稿する</button>
-    </form>
-  `;
-  panel.querySelector(".trb-close").addEventListener("click", close);
-
-  const attachList = panel.querySelector("#attach-list");
-  if (attachList && report.attachments && report.attachments.length) {
-    report.attachments.forEach(att => attachList.appendChild(buildAttachmentRow(report.id, att)));
-  }
-
-  function renderComments() {
-    const listSlot = panel.querySelector("#comment-list-slot");
-    if (report.comments.length === 0) {
-      listSlot.innerHTML = '<p class="trb-no-comments">最初の感想を書いてみましょう。</p>';
-    } else {
-      listSlot.innerHTML = `<ul class="trb-comment-list">${report.comments.map(c => `
-        <li class="trb-comment">
-          ${hankoHtml(c.author, "md")}
-          <div>
-            <p class="trb-comment-author">${escapeHtml(c.author)}</p>
-            <p class="trb-comment-text">${escapeHtml(c.text)}</p>
-          </div>
-        </li>`).join("")}</ul>`;
-    }
-  }
-  renderComments();
-
-  const person = emptyPerson();
-  mountStaffPicker(panel.querySelector("#comment-picker-slot"), person);
-
-  panel.querySelector("#comment-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const author = getPersonName(person);
-    const textEl = panel.querySelector("#trb-text");
-    const text = textEl.value.trim();
-    if (!author || !text) return;
-    report.comments.push({ id: makeId(), author, floor: person.floor, role: person.role, text, createdAt: Date.now() });
-    await persistReports(state.reports);
-    renderComments();
-    panel.querySelector("#comment-count").textContent = report.comments.length;
-    textEl.value = "";
-    renderBoard();
-  });
-
-  document.body.appendChild(overlay);
-}
-
-function openNewReportForm() {
-  const overlay = createElement('<div class="trb-overlay"></div>');
-  const panel = createElement('<div class="trb-panel"></div>');
-  overlay.appendChild(panel);
-  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
-  function close() { overlay.remove(); }
-
-  panel.innerHTML = `
-    <button class="trb-close" aria-label="閉じる">×</button>
-    <h2 class="trb-panel-title">研修報告を投稿</h2>
-    <p class="trb-share-note">投稿内容は他のメンバー全員に公開されます。</p>
-    <form class="trb-new-form" id="new-report-form">
-      <label class="trb-label" for="nr-title">研修タイトル</label>
-      <input id="nr-title" class="trb-input" placeholder="例：感染対策研修" required />
-      <label class="trb-label">報告者</label>
-      <div id="nr-picker-slot"></div>
-      <label class="trb-label" for="nr-date">受講日</label>
-      <input id="nr-date" type="date" class="trb-input" />
-      <label class="trb-label" for="nr-summary">研修内容の要約</label>
-      <textarea id="nr-summary" class="trb-textarea" rows="3" required></textarea>
-      <label class="trb-label" for="nr-points">ポイント（1行につき1項目）</label>
-      <textarea id="nr-points" class="trb-textarea" rows="3" placeholder="例：${"\\n"}手袋交換のタイミングを見直す${"\\n"}防護具は各フロアで3日分確保する"></textarea>
-
-      <label class="trb-label" for="nr-link">参考URL（任意）</label>
-      <input id="nr-link" type="url" class="trb-input" placeholder="https://example.com/資料" />
-
-      <label class="trb-label" for="nr-files">添付ファイル（PDF・画像、任意）</label>
-      <input id="nr-files" type="file" class="trb-input" accept="application/pdf,image/*" multiple />
-      <p class="trb-share-note">1ファイルあたり3MBまで。大きい資料は参考URLの共有をおすすめします。</p>
-      <p class="trb-picker-hint" id="nr-file-error" hidden></p>
-      <div class="trb-file-list" id="nr-file-list"></div>
-
-      <div class="trb-form-actions">
-        <button type="button" class="trb-btn" id="nr-cancel">キャンセル</button>
-        <button type="submit" class="trb-btn trb-btn-primary">投稿する</button>
-      </div>
-    </form>
-  `;
-  panel.querySelector(".trb-close").addEventListener("click", close);
-  panel.querySelector("#nr-cancel").addEventListener("click", close);
-
-  const person = emptyPerson();
-  mountStaffPicker(panel.querySelector("#nr-picker-slot"), person);
-
-  let pendingFiles = [];
-  const fileInput = panel.querySelector("#nr-files");
-  const fileListEl = panel.querySelector("#nr-file-list");
-  const fileErrorEl = panel.querySelector("#nr-file-error");
-
-  function renderFileList() {
-    if (pendingFiles.length === 0) { fileListEl.innerHTML = ""; return; }
-    fileListEl.innerHTML = pendingFiles.map(pf => `
-      <div class="trb-file-chip" data-id="${pf.tempId}">
-        <span>${escapeHtml(pf.file.name)}（${formatFileSize(pf.file.size)}）</span>
-        <button type="button" class="trb-chip-remove" data-id="${pf.tempId}" aria-label="削除">×</button>
-      </div>`).join("");
-    fileListEl.querySelectorAll(".trb-chip-remove").forEach(btn => {
-      btn.addEventListener("click", () => {
-        pendingFiles = pendingFiles.filter(pf => pf.tempId !== btn.dataset.id);
-        renderFileList();
-      });
-    });
-  }
-
-  fileInput.addEventListener("change", () => {
-    const files = Array.from(fileInput.files || []);
-    const rejected = [];
-    files.forEach(file => {
-      if (file.size > MAX_FILE_SIZE) { rejected.push(file.name); return; }
-      pendingFiles.push({ tempId: makeId(), file });
-    });
-    fileInput.value = "";
-    renderFileList();
-    if (rejected.length) {
-      fileErrorEl.textContent = `次のファイルは3MBを超えるため追加できませんでした：${rejected.join("、")}`;
-      fileErrorEl.hidden = false;
-    } else {
-      fileErrorEl.hidden = true;
-    }
-  });
-
-  panel.querySelector("#new-report-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const title = panel.querySelector("#nr-title").value.trim();
-    const presenter = getPersonName(person);
-    const date = panel.querySelector("#nr-date").value;
-    const summary = panel.querySelector("#nr-summary").value.trim();
-    const pointsText = panel.querySelector("#nr-points").value;
-    const link = panel.querySelector("#nr-link").value.trim();
-    if (!title || !presenter || !summary || !person.floor || !person.role) return;
-    const keyPoints = pointsText.split("\n").map(s => s.trim()).filter(Boolean);
-
-    const submitBtn = panel.querySelector('button[type="submit"]');
-    submitBtn.disabled = true;
-    submitBtn.textContent = "投稿中…";
-
-    const reportId = makeId();
-    const attachments = [];
-    const failedUploads = [];
-    for (const pf of pendingFiles) {
-      try {
-        const dataUrl = await readFileAsDataUrl(pf.file);
-        const attId = makeId();
-        const result = await window.storage.set(attachmentKey(reportId, attId), dataUrl, true);
-        if (!result) throw new Error("save failed");
-        attachments.push({ id: attId, name: pf.file.name, mimeType: pf.file.type || "application/octet-stream", size: pf.file.size });
-      } catch {
-        failedUploads.push(pf.file.name);
-      }
-    }
-
-    const report = { id: reportId, title, floor: person.floor, role: person.role, presenter, date, summary, keyPoints, link, attachments, createdAt: Date.now(), comments: [] };
-    state.reports = [report, ...state.reports];
-    await persistReports(state.reports);
-
-    if (failedUploads.length) {
-      setError(`一部のファイルの保存に失敗しました（${failedUploads.join("、")}）。報告自体は投稿されています。`);
-    }
-    close();
-    renderBoard();
-  });
-
-  document.body.appendChild(overlay);
-}
-
-function openSettings() {
-  const overlay = createElement('<div class="trb-overlay"></div>');
-  const panel = createElement('<div class="trb-panel trb-panel-wide"></div>');
-  overlay.appendChild(panel);
-  overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
-  function close() { overlay.remove(); }
-
-  function renderPanel() {
-    panel.innerHTML = `
-      <button class="trb-close" aria-label="閉じる">×</button>
-      <h2 class="trb-panel-title">設定：職員の登録</h2>
-      <p class="trb-share-note">フロアと職種ごとに職員名を登録すると、報告・感想の入力時に選べるようになります。</p>
-      ${Object.entries(STAFF_STRUCTURE).map(([floor, roles]) => `
-        <div class="trb-floor-section">
-          <h3 class="trb-floor-heading">${escapeHtml(floor)}</h3>
-          ${roles.map(role => {
-            const names = state.staff[floor][role] || [];
-            return `
-            <div class="trb-role-block" data-floor="${escapeHtml(floor)}" data-role="${escapeHtml(role)}">
-              <p class="trb-role-heading">${escapeHtml(role)}</p>
-              <div class="trb-chip-row">
-                ${names.length === 0 ? '<span class="trb-no-stamp">未登録</span>' : names.map(n => `
-                  <span class="trb-chip">${escapeHtml(n)}<button type="button" class="trb-chip-remove" data-name="${escapeHtml(n)}" aria-label="${escapeHtml(n)}を削除">×</button></span>
-                `).join("")}
-              </div>
-              <div class="trb-add-row">
-                <input class="trb-input trb-staff-add-input" placeholder="職員名を入力" />
-                <button type="button" class="trb-btn trb-staff-add-btn">追加</button>
-              </div>
-            </div>`;
-          }).join("")}
-        </div>
-      `).join("")}
-    `;
-    panel.querySelector(".trb-close").addEventListener("click", close);
-
-    panel.querySelectorAll(".trb-role-block").forEach(block => {
-      const floor = block.dataset.floor;
-      const role = block.dataset.role;
-      block.querySelectorAll(".trb-chip-remove").forEach(btn => {
-        btn.addEventListener("click", async () => {
-          state.staff[floor][role] = state.staff[floor][role].filter(n => n !== btn.dataset.name);
-          await persistStaff(state.staff);
-          renderPanel();
-        });
-      });
-      const input = block.querySelector(".trb-staff-add-input");
-      const addBtn = block.querySelector(".trb-staff-add-btn");
-      const doAdd = async () => {
-        const value = input.value.trim();
-        if (!value) return;
-        if (!state.staff[floor][role].includes(value)) {
-          state.staff[floor][role] = [...state.staff[floor][role], value];
-          await persistStaff(state.staff);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>老健 内部研修ポータル</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
-        renderPanel();
-      };
-      addBtn.addEventListener("click", doAdd);
-      input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); doAdd(); } });
-    });
-  }
-  renderPanel();
-  document.body.appendChild(overlay);
-}
 
-document.getElementById("settings-btn").addEventListener("click", openSettings);
-document.getElementById("new-report-btn").addEventListener("click", openNewReportForm);
+        body {
+            background-color: #f0f4f8;
+            color: #333;
+            min-height: 100vh;
+        }
 
-(async function init() {
-  await Promise.all([loadReports(), loadStaff()]);
-  renderBoard();
-})();
-</script>
+        /* 1. ログイン前画面 */
+        .login-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .auth-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 400px;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-header h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-header p {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: #475569;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: #2563eb;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.6rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background-color: #2563eb;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: #475569;
+        }
+
+        .btn-logout {
+            background-color: #ef4444;
+            color: #fff;
+        }
+
+        .btn-setting {
+            background-color: #475569;
+            color: #fff;
+        }
+
+        .btn-history {
+            background-color: #0284c7;
+            color: #fff;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: #94a3b8;
+            font-size: 0.8rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .divider::before {
+            margin-right: .5em;
+        }
+
+        .divider::after {
+            margin-left: .5em;
+        }
+
+        .btn-google {
+            width: 100%;
+            background-color: #fff;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .status-message {
+            margin-top: 1.5rem;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            text-align: center;
+            display: none;
+        }
+
+        .status-message.active {
+            display: block;
+        }
+
+        .status-info {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-error {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* 2. ポータル全体 */
+        #portal-container {
+            display: none;
+        }
+
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: #1e3a8a;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #475569;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* 研修カード */
+        .training-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 768px) {
+            .training-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .training-card {
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            width: fit-content;
+        }
+
+        .tag-mandatory {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .tag-optional {
+            background-color: #f1f5f9;
+            color: #475569;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .card-body:hover {
+            background-color: #f8f9fa;
+            /* ホバー時に薄いグレーにする */
+        }
+
+        .card-body:active {
+            transform: scale(0.99);
+            /* クリックした瞬間に少し凹む演出 */
+        }
+
+        .card-title-link {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2563eb;
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            display: block;
+        }
+
+        .card-title-link:hover {
+            text-decoration: underline;
+        }
+
+        .card-desc {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+            flex: 1;
+        }
+
+        .card-footer {
+            border-top: 1px solid #f1f5f9;
+            padding-top: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-detail {
+            background-color: #2563eb;
+            color: white;
+            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* 研修詳細ページ */
+        #detail-view {
+            display: none;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: #2563eb;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            text-decoration: none;
+        }
+
+        .detail-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .detail-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0.5rem 0;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            background-color: #000;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .content-block {
+            background-color: #f8fafc;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        .action-area {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            border-top: 1px solid #e2e8f0;
+            background-color: #f8fafc;
+            padding: 1.25rem;
+            border-radius: 6px;
+        }
+
+        .form-row-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .form-row-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .form-row-group select,
+        .form-row-group textarea {
+            padding: 0.6rem;
+            font-size: 0.85rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .form-row-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row-group select:focus,
+        .form-row-group textarea:focus {
+            border-color: #2563eb;
+        }
+
+        .btn-complete {
+            background-color: #10b981;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.75rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            align-self: flex-start;
+        }
+
+        /* 3. モーダル共通スタイル（設定・履歴） */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            width: 100%;
+            max-width: 800px;
+            max-height: 85vh;
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-header h2 {
+            font-size: 1.2rem;
+            color: #1e3a8a;
+        }
+
+        .btn-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .modal-body {
+            overflow-y: auto;
+            flex: 1;
+            padding-right: 0.5rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .form-row select,
+        .form-row input {
+            padding: 0.5rem;
+            font-size: 0.85rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .form-row select {
+            flex: 1;
+            min-width: 110px;
+        }
+
+        .form-row input {
+            flex: 2;
+            min-width: 140px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            border: 1px solid #e2e8f0;
+            padding: 0.60rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .data-table th {
+            background-color: #f8fafc;
+            color: #475569;
+        }
+
+        .comment-cell {
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: #334155;
+            font-size: 0.8rem;
+        }
+
+        .btn-delete {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 1. ログイン画面 -->
+    <div id="login-wrapper" class="login-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>老健 職員研修ポータル</h1>
+                <p>デモモード：任意のメール・パスワードでログインできます</p>
+            </div>
+
+            <div class="form-group">
+                <label for="email">メールアドレス</label>
+                <input type="email" id="email" class="form-control" placeholder="example@facility.or.jp">
+            </div>
+
+            <div class="form-group">
+                <label for="password">パスワード</label>
+                <input type="password" id="password" class="form-control" placeholder="••••••••">
+            </div>
+
+            <div class="btn-group">
+                <button id="login-btn" class="btn btn-primary" style="flex:1;">ログイン</button>
+                <button id="signup-btn" class="btn btn-secondary" style="flex:1;">新規登録</button>
+            </div>
+
+            <div class="divider">または</div>
+
+            <button id="google-login-btn" class="btn btn-google">
+                <svg width="18" height="18" viewBox="0 0 24 24">
+                    <path fill="#4285F4"
+                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                    <path fill="#34A853"
+                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                    <path fill="#FBBC05"
+                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                    <path fill="#EA4335"
+                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                </svg>
+                Googleでログイン
+            </button>
+
+            <div id="status-message" class="status-message"></div>
+        </div>
+    </div>
+
+    <!-- 2. ポータル全体 -->
+    <div id="portal-container">
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <span>🏥</span>内部研修
+            </div>
+            <div class="user-info">
+                <span id="user-display">ログイン中</span>
+                <!-- 研修追加モーダルを開くボタン -->
+                <button id="open-add-training-btn" class="btn btn-primary">研修追加</button>
+                <button id="open-history-btn" class="btn btn-history">📊履歴</button>
+                <button id="open-setting-btn" class="btn btn-setting">⚙️設定</button>
+                <button id="logout-btn" class="btn btn-logout">ログアウト</button>
+            </div>
+        </nav>
+
+        <!-- A. 研修一覧画面 -->
+        <main id="list-view" class="container">
+            <div class="section-title">
+                <span>📚</span> 受講コンテンツ一覧
+            </div>
+
+            <div class="training-grid" id="training-grid">
+                <!-- JSで動的にカードが追加されます -->
+            </div>
+        </main>
+
+        <!-- B. 研修詳細ページ -->
+        <main id="detail-view" class="container">
+            <a class="back-link" onclick="closeDetail()">← 一覧に戻る</a>
+
+            <div class="detail-card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div style="flex: 1;">
+                        <div class="detail-header">
+                            <span id="detail-tag" class="card-tag"></span>
+                            <h1 id="detail-title" class="detail-title"></h1>
+                            <div id="detail-author-info" style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #e2e8f0; font-size: 0.85rem; color: #64748b;">
+                                <div style="margin-bottom: 0.4rem;"><span style="font-weight: 600;">作成者：</span><span id="detail-author-name"></span></div>
+                                <div><span style="font-weight: 600;">作成日：</span><span id="detail-created-date"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="edit-training-btn" class="btn btn-setting" style="padding: 0.5rem 1rem; white-space: nowrap;">✏️ 編集</button>
+                </div>
+
+                <div class="content-block" style="padding: 0; border: none; background: none; margin-bottom: 0;">
+                    <!-- コンテンツ選択タブ -->
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; flex-wrap: wrap;">
+                        <button class="content-tab-btn active" data-tab="video" style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #2563eb; border-bottom: 3px solid #2563eb; margin-bottom: -2px;">📹 動画</button>
+                        <button class="content-tab-btn" data-tab="slides" style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #64748b; border-bottom: 3px solid transparent; margin-bottom: -2px;">🖼️ スライド</button>
+                        <button class="content-tab-btn" data-tab="pdf" style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #64748b; border-bottom: 3px solid transparent; margin-bottom: -2px;">📄 PDF</button>
+                    </div>
+
+                    <!-- 動画タブ -->
+                    <div id="content-tab-video" class="content-tab-pane" style="display: block; margin-bottom: 1.5rem;">
+                        <div class="video-container" style="margin-bottom: 0;">
+                            <iframe id="detail-video" src="" title="研修動画" allowfullscreen></iframe>
+                        </div>
+                    </div>
+
+                    <!-- スライドタブ -->
+                    <div id="content-tab-slides" class="content-tab-pane" style="display: none; margin-bottom: 1.5rem;">
+                        <div class="video-container" style="margin-bottom: 0;">
+                            <iframe id="detail-slides" src="" title="研修スライド" allowfullscreen></iframe>
+                        </div>
+                    </div>
+
+                    <!-- PDFタブ -->
+                    <div id="content-tab-pdf" class="content-tab-pane" style="display: none; margin-bottom: 1.5rem;">
+                        <div style="text-align: center; padding: 2rem; background-color: #f8fafc; border-radius: 6px;">
+                            <a id="detail-pdf-link" href="#" target="_blank" class="btn btn-primary"
+                                style="display: inline-block; text-decoration: none;">
+                                📄 PDF資料を開く・ダウンロード
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-block">
+                    <h3 style="margin-bottom:0.5rem; font-size:1rem; color:#1e293b;">📌 本研修のポイント</h3>
+                    <p id="detail-description"></p>
+                </div>
+
+                <!-- 受講者選択・感想入力・完了記録エリア -->
+                <div class="action-area">
+                    <div class="form-row-group">
+                        <span id="detail-completion-status" style="font-size: 0.85rem; color: #2563eb; margin-bottom: 0.5rem; cursor: pointer; text-decoration: underline;" onclick="openTrainingStatusModal()"></span>
+                        <label>受講者選択（フロア ➔ 職種 ➔ 氏名）:</label>
+                        <div class="filter-select-group">
+                            <select id="detail-floor-select">
+                                <option value="2階">2階</option>
+                                <option value="1階">1階</option>
+                            </select>
+                            <select id="detail-role-select">
+                                <option value="介護職">介護職</option>
+                                <option value="看護職">看護職</option>
+                                <option value="リハビリ">リハビリ</option>
+                                <option value="相談員">相談員</option>
+                                <option value="医師">医師</option>
+                                <option value="栄養士">栄養士</option>
+                                <option value="事務">事務</option>
+                                <option value="その他">その他</option>
+                            </select>
+                            <select id="detail-name-select">
+                                <!-- JSで動的に名前がセットされます -->
+                            </select>
+                        </div>
+                        <div id="detail-direct-input-group" style="display: none; width: 100%; margin-top: 0.5rem;">
+                            <input type="text" id="detail-direct-input-name" placeholder="氏名を直接入力" style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem;">
+                        </div>
+                    </div>
+
+                    <div class="form-row-group">
+                        <label for="detail-comment-input">受講時の感想・学んだこと <span style="color: red;">*必須</span>:</label>
+                        <textarea id="detail-comment-input"
+                            placeholder="動画を視聴して気づいたことや、今後の業務で意識したい点を入力してください"></textarea>
+                    </div>
+
+                    <button id="detail-complete-btn" class="btn-complete">受講完了と感想を記録する</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 3. 設定モーダル（職員登録） -->
+    <div id="setting-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⚙️ 職員情報設定</h2>
+                <button id="close-setting-btn" class="btn-close">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size:0.85rem; color:#64748b; margin-bottom:1rem;">所属フロア・職種を選択し、氏名を登録してください。</p>
+
+                <div class="form-row">
+                    <select id="staff-floor">
+                        <option value="2階">2階</option>
+                        <option value="1階">1階</option>
+                    </select>
+
+                    <select id="staff-role">
+                        <option value="介護職">介護職</option>
+                        <option value="看護職">看護職</option>
+                        <option value="リハビリ">リハビリ</option>
+                        <option value="相談員">相談員</option>
+                        <option value="医師">医師</option>
+                        <option value="栄養士">栄養士</option>
+                        <option value="事務">事務</option>
+                        <option value="その他">その他</option>
+                    </select>
+
+                    <input type="text" id="staff-name" placeholder="氏名を入力">
+
+                    <button id="add-staff-btn" class="btn btn-primary" style="padding: 0.5rem 1rem;">追加</button>
+                </div>
+
+                <h3 style="font-size:0.95rem; color:#1e293b; margin-top:1.5rem; margin-bottom:0.5rem;">登録済み職員一覧</h3>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>フロア</th>
+                            <th>職種</th>
+                            <th>氏名</th>
+                            <th style="width: 50px;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="staff-table-body">
+                        <!-- JSで描画 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. 受講履歴確認モーダル -->
+    <div id="history-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📊 研修受講履歴一覧</h2>
+                <button id="close-history-btn" class="btn-close">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size:0.85rem; color:#64748b; margin-bottom:1rem;">これまでに記録された研修の受講完了履歴と感想です。</p>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 110px;">受講日時</th>
+                            <th style="width: 160px;">職員名（所属/職種）</th>
+                            <th style="width: 180px;">研修タイトル</th>
+                            <th>感想・コメント</th>
+                            <th style="width: 50px;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-table-body">
+                        <!-- JSで描画 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Googleログイン時の職員選択モーダル -->
+    <div id="staff-selection-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h2>📋 職員を選択してください</h2>
+                <button id="close-staff-selection-btn" class="btn-close">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size:0.85rem; color:#64748b; margin-bottom:1rem;">ログイン時に使用する職員を選択してください。</p>
+
+                <div class="form-row-group">
+                    <label>フロア ➔ 職種 ➔ 氏名</label>
+                    <select id="staff-selection-floor" style="width: 100%; padding: 8px; margin-bottom: 0.5rem;">
+                        <option value="2階">2階</option>
+                        <option value="1階">1階</option>
+                    </select>
+                    <select id="staff-selection-role" style="width: 100%; padding: 8px; margin-bottom: 0.5rem;">
+                        <option value="介護職">介護職</option>
+                    </select>
+                    <select id="staff-selection-name" style="width: 100%; padding: 8px; margin-bottom: 1rem;">
+                        <option value="">職員を選択</option>
+                    </select>
+                </div>
+
+                <button id="confirm-staff-selection-btn" class="btn btn-primary" style="width: 100%; padding: 0.75rem;">選択してログイン</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. 研修受講状況確認モーダル -->
+    <div id="training-status-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📋 研修受講状況</h2>
+                <button id="close-training-status-btn" class="btn-close">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size:0.85rem; color:#64748b; margin-bottom:1rem;" id="training-status-title"></p>
+
+                <h3 style="font-size:0.95rem; color:#10b981; margin-top:1rem; margin-bottom:0.75rem;">✅ 研修済み</h3>
+                <div id="completed-staff-list" style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+                    <!-- 受講済みの職員が表示されます -->
+                </div>
+
+                <h3 style="font-size:0.95rem; color:#ef4444; margin-bottom:0.75rem;">⏳ 未受講</h3>
+                <div id="incomplete-staff-list" style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; padding: 1rem;">
+                    <!-- 未受講の職員が表示されます -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. 研修編集モーダル -->
+    <div id="edit-training-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="max-width: 500px; max-height: 90vh; overflow-y: auto;">
+            <h3>✏️ 研修を編集</h3>
+
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px; text-align: left;">
+                <label>
+                    区分：
+                    <select id="edit-input-tag-class" style="width: 100%; padding: 8px; margin-top: 4px;">
+                        <option value="tag-mandatory|研修報告">研修報告</option>
+                        <option value="tag-optional|内部研修">内部研修</option>
+                    </select>
+                </label>
+
+                <label>
+                    研修タイトル：
+                    <input type="text" id="edit-input-title" placeholder="例: 虐待防止・権利擁護の推進"
+                        style="width: 100%; padding: 8px; margin-top: 4px;">
+                </label>
+
+                <label>
+                    研修内容の要約：
+                    <textarea id="edit-input-summary" rows="3" placeholder="研修の内容や狙いを簡潔にまとめてください"
+                        style="width: 100%; padding: 8px; margin-top: 4px;"></textarea>
+                </label>
+
+                <label>
+                    作成者選択（フロア ➔ 職種 ➔ 氏名）：
+                    <div style="display: flex; gap: 0.5rem; margin-top: 4px; flex-direction: column;">
+                        <select id="edit-input-author-floor" style="width: 100%; padding: 8px;">
+                            <option value="2階">2階</option>
+                            <option value="1階">1階</option>
+                        </select>
+                        <select id="edit-input-author-role" style="width: 100%; padding: 8px;">
+                            <option value="介護職">介護職</option>
+                        </select>
+                        <select id="edit-input-author-name" style="width: 100%; padding: 8px;">
+                            <option value="">職員を選択</option>
+                        </select>
+                    </div>
+                </label>
+
+                <label>
+                    作成日：
+                    <input type="date" id="edit-input-created-date" style="width: 100%; padding: 8px; margin-top: 4px;">
+                </label>
+
+                <label>
+                    動画URL (YouTube) / 省略可：
+                    <input type="text" id="edit-input-video-url" placeholder="https://www.youtube.com/watch?v=..."
+                        style="width: 100%; padding: 8px; margin-top: 4px;">
+                </label>
+
+                <label>
+                    スライドURL (Google Slides) / 省略可：
+                    <input type="text" id="edit-input-slides-url" placeholder="https://docs.google.com/presentation/d/..."
+                        style="width: 100%; padding: 8px; margin-top: 4px;">
+                </label>
+
+                <label>
+                    PDF資料URL / 省略可：
+                    <input type="text" id="edit-input-pdf-url" placeholder="https://example.com/document.pdf"
+                        style="width: 100%; padding: 8px; margin-top: 4px;">
+                </label>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                <button id="close-edit-training-btn" style="padding: 8px 16px;">キャンセル</button>
+                <button id="save-edit-training-btn" class="btn-primary" style="padding: 8px 16px;">編集を保存</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="add-training-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="max-width: 500px; max-height: 90vh; overflow-y: auto;">
+            <h3>➕ 新規研修の追加</h3>
+
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 15px; text-align: left;">
+                <label>
+                    区分：
+                    <select id="input-tag-class" style="width: 100%; padding: 8px; margin-top: 4px;">
+                        <option value="tag-mandatory|研修報告">研修報告</option>
+                        <option value="tag-optional|内部研修">内部研修</option>
+                    </select>
+                </label>
+
+                <label>
+                    研修タイトル：
+                    <input type="text" id="input-title" placeholder="例: 虐待防止・権利擁護の推進"
+                        style="width: 100%; padding: 8px; margin-top: 4px;">
+                </label>
+
+                <label>
+                    研修内容の要約：
+                    <textarea id="input-summary" rows="3" placeholder="研修の内容や狙いを簡潔にまとめてください"
+                        style="width: 100%; padding: 8px; margin-top: 4px;"></textarea>
+                </label>
+
+                <label>
+                    作成者選択（フロア ➔ 職種 ➔ 氏名）：
+                    <div class="filter-select-group" style="display: flex; gap: 0.5rem; margin-top: 4px;">
+                        <select id="input-author-floor" style="flex: 1; padding: 8px;">
+                            <option value="2階">2階</option>
+                            <option value="1階">1階</option>
+                        </select>
+                        <select id="input-author-role" style="flex: 1; padding: 8px;">
+                            <option value="介護職">介護職</option>
+                        </select>
+                        <select id="input-author-name" style="flex: 1; padding: 8px;">
+                            <option value="">職員を選択</option>
+                        </select>
+                    </div>
+                </label>
+
+                <label>
+                    作成日：
+                    <input type="date" id="input-created-date" style="width: 100%; padding: 8px; margin-top: 4px;">
+                </label>
+
+                <label>
+                    動画URL (YouTube) / 省略可：
+                    <input type="text" id="input-video-url" placeholder="https://www.youtube.com/watch?v=... または https://youtu.be/..."
+                        style="width: 100%; padding: 8px; margin-top: 4px;">
+                </label>
+
+                <label>
+                    スライドURL (Google Slides) / 省略可：
+                    <input type="text" id="input-slides-url" placeholder="https://docs.google.com/presentation/d/..."
+                        style="width: 100%; padding: 8px; margin-top: 4px;">
+                </label>
+
+                <label>
+                    PDF資料URL / 省略可：
+                    <input type="text" id="input-pdf-url" placeholder="https://example.com/document.pdf"
+                        style="width: 100%; padding: 8px; margin-top: 4px;">
+                </label>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                <button id="close-add-training-btn" style="padding: 8px 16px;">キャンセル</button>
+                <button id="save-training-btn" class="btn-primary" style="padding: 8px 16px;">保存して追加</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. JavaScript -->
+    <script>
+        // ===== デモモード：Firebase なし、ローカル認証のみ =====
+        let isLoggedIn = false;
+
+        const loginWrapper = document.getElementById("login-wrapper");
+        const portalContainer = document.getElementById("portal-container");
+        const userDisplay = document.getElementById("user-display");
+        const listView = document.getElementById("list-view");
+        const detailView = document.getElementById("detail-view");
+
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        const signupBtn = document.getElementById("signup-btn");
+        const loginBtn = document.getElementById("login-btn");
+        const logoutBtn = document.getElementById("logout-btn");
+        const statusMsg = document.getElementById("status-message");
+
+        // 研修データ
+        const trainingData = {};
+
+        let currentActiveKey = null;
+
+        // --- 職員データ管理 ---
+        const rolesByFloor = {
+            "2階": ["看護師長", "看護師", "介護士", "ケアマネージャー"],
+            "1階": ["副施設長", "事務長", "リハビリ", "通所リハ", "栄養士"]
+        };
+
+        let staffList = JSON.parse(localStorage.getItem("roken_staff_list")) || [];
+        // --- 受講履歴データ管理 ---
+        let historyList = JSON.parse(localStorage.getItem("roken_history_list")) || [];
+
+        const staffFloorSelect = document.getElementById("staff-floor");
+        const staffRoleSelect = document.getElementById("staff-role");
+        const staffNameInput = document.getElementById("staff-name");
+        const staffTableBody = document.getElementById("staff-table-body");
+
+        // 詳細ページの3段階絞り込み用要素
+        const detailFloorSelect = document.getElementById("detail-floor-select");
+        const detailRoleSelect = document.getElementById("detail-role-select");
+        const detailNameSelect = document.getElementById("detail-name-select");
+        const detailCommentInput = document.getElementById("detail-comment-input");
+        const historyTableBody = document.getElementById("history-table-body");
+
+        // 職員登録の職種ドロップダウン更新
+        const updateRoleOptions = () => {
+            if (!staffFloorSelect || !staffRoleSelect) return;
+            const selectedFloor = staffFloorSelect.value;
+            const roles = rolesByFloor[selectedFloor] || [];
+            staffRoleSelect.innerHTML = roles.map(role => `<option value="${role}">${role}</option>`).join("");
+        };
+
+        if (staffFloorSelect) {
+            staffFloorSelect.addEventListener("change", updateRoleOptions);
+        }
+
+        // --- 詳細ページの3段階連動ドロップダウン処理 ---
+        const updateDetailRoleOptions = () => {
+            if (!detailFloorSelect || !detailRoleSelect) return;
+            const selectedFloor = detailFloorSelect.value;
+            const roles = rolesByFloor[selectedFloor] || [];
+            detailRoleSelect.innerHTML = roles.map(role => `<option value="${role}">${role}</option>`).join("");
+            updateDetailNameOptions();
+        };
+
+        const updateDetailNameOptions = () => {
+            if (!detailFloorSelect || !detailRoleSelect || !detailNameSelect) return;
+            const selectedFloor = detailFloorSelect.value;
+            const selectedRole = detailRoleSelect.value;
+
+            // 選択された「フロア」かつ「職種」に一致する職員を抽出
+            const filteredStaff = staffList.filter(s => s.floor === selectedFloor && s.role === selectedRole);
+
+            if (filteredStaff.length === 0) {
+                detailNameSelect.innerHTML = '<option value="">直接入力</option>';
+            } else {
+                detailNameSelect.innerHTML = '<option value="">選択してください</option>' + filteredStaff.map(staff =>
+                    `<option value="${staff.name}">${staff.name}</option>`
+                ).join("") + '<option value="direct-input">直接入力</option>';
+            }
+
+            updateDetailInputVisibility();
+        };
+
+        // 直接入力の表示/非表示を制御
+        const updateDetailInputVisibility = () => {
+            const directInputGroup = document.getElementById("detail-direct-input-group");
+            const directInputName = document.getElementById("detail-direct-input-name");
+            
+            if (detailNameSelect.value === "direct-input") {
+                directInputGroup.style.display = "block";
+                directInputName.focus();
+            } else {
+                directInputGroup.style.display = "none";
+                directInputName.value = "";
+            }
+        };
+
+        if (detailNameSelect) {
+            detailNameSelect.addEventListener("change", updateDetailInputVisibility);
+        }
+
+        if (detailFloorSelect) detailFloorSelect.addEventListener("change", updateDetailRoleOptions);
+        if (detailRoleSelect) detailRoleSelect.addEventListener("change", updateDetailNameOptions);
+
+        // 職員テーブル描画
+        const renderStaffTable = () => {
+            if (!staffTableBody) return;
+            staffTableBody.innerHTML = staffList.length ? staffList.map((staff, index) => `
+        <tr>
+            <td>${staff.floor}</td>
+            <td>${staff.role}</td>
+            <td>${staff.name}</td>
+            <td><button class="btn-delete" onclick="deleteStaff(${index})">削除</button></td>
+        </tr>
+    `).join("") : '<tr><td colspan="4" style="text-align:center; color:#94a3b8;">職員が登録されていません</td></tr>';
+        };
+
+        // 職員追加
+        const addStaffBtn = document.getElementById("add-staff-btn");
+        if (addStaffBtn) {
+            addStaffBtn.addEventListener("click", () => {
+                const floor = staffFloorSelect.value;
+                const role = staffRoleSelect.value;
+                const name = staffNameInput.value.trim();
+
+                if (!name) {
+                    alert("氏名を入力してください");
+                    return;
+                }
+
+                staffList.push({ floor, role, name });
+                localStorage.setItem("roken_staff_list", JSON.stringify(staffList));
+                staffNameInput.value = "";
+                renderStaffTable();
+            });
+        }
+
+        // 職員削除
+        window.deleteStaff = (index) => {
+            staffList.splice(index, 1);
+            localStorage.setItem("roken_staff_list", JSON.stringify(staffList));
+            renderStaffTable();
+        };
+
+        // --- 受講履歴の描画と追加 ---
+        const renderHistoryTable = () => {
+            if (!historyTableBody) return;
+            historyTableBody.innerHTML = historyList.length ? historyList.map((item, index) => `
+        <tr>
+            <td>${item.date}</td>
+            <td>${item.staffName}<br><span style="color:#64748b; font-size:0.75rem;">（${item.staffFloor}・${item.staffRole}）</span></td>
+            <td>${item.trainingTitle}</td>
+            <td class="comment-cell">${item.comment ? escapeHtml(item.comment) : '<span style="color:#94a3b8;">（感想なし）</span>'}</td>
+            <td><button class="btn-delete" onclick="deleteHistory(${index})">削除</button></td>
+        </tr>
+    `).join("") : '<tr><td colspan="5" style="text-align:center; color:#94a3b8;">受講履歴はありません</td></tr>';
+        };
+
+        // HTMLエスケープ処理（安全用）
+        const escapeHtml = (str) => {
+            if (!str) return "";
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        };
+
+        // 履歴削除
+        window.deleteHistory = (index) => {
+            historyList.splice(index, 1);
+            localStorage.setItem("roken_history_list", JSON.stringify(historyList));
+            renderHistoryTable();
+        };
+
+        // --- 受講完了ボタン押下時の処理 ---
+        const detailCompleteBtn = document.getElementById("detail-complete-btn");
+        if (detailCompleteBtn) {
+            detailCompleteBtn.addEventListener("click", () => {
+                if (!currentActiveKey) return;
+
+                const floor = detailFloorSelect.value;
+                const role = detailRoleSelect.value;
+                let name = detailNameSelect.value;
+                const comment = detailCommentInput.value.trim();
+
+                // 直接入力の場合は入力欄から取得
+                if (name === "direct-input") {
+                    name = document.getElementById("detail-direct-input-name").value.trim();
+                }
+
+                // 1. 職員選択のチェック
+                if (!name || name === "") {
+                    alert("受講対象の職員を選択してください。登録がない場合は「直接入力」で名前を入力してください。");
+                    return;
+                }
+
+                // 2. 感想未入力のチェック
+                if (comment === "") {
+                    alert("感想を入力してください。");
+                    detailCommentInput.focus();
+                    return;
+                }
+
+                const training = trainingData[currentActiveKey];
+
+                // 現在日時を取得 (YYYY/MM/DD HH:mm)
+                const now = new Date();
+                const dateStr = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+                const newRecord = {
+                    date: dateStr,
+                    staffName: name,
+                    staffFloor: floor,
+                    staffRole: role,
+                    trainingTitle: training.title,
+                    comment: comment
+                };
+
+                historyList.unshift(newRecord);
+                localStorage.setItem("roken_history_list", JSON.stringify(historyList));
+
+                // カード内の受講人数表示をリアルタイム更新
+                const completedCount = historyList.filter(item => item.trainingTitle === training.title).length;
+                const totalStaffCount = staffList.length;
+                const completionText = `（${completedCount}/${totalStaffCount}人）研修済み`;
+                
+                const card = document.getElementById(`card-${currentActiveKey}`);
+                if (card) {
+                    const completionSpan = card.querySelector('.card-footer span');
+                    if (completionSpan) {
+                        completionSpan.textContent = completionText;
+                    }
+                }
+
+                // 詳細ページの受講人数表示もリアルタイム更新
+                const completionStatusElem = document.getElementById("detail-completion-status");
+                if (completionStatusElem) {
+                    completionStatusElem.textContent = completionText;
+                }
+
+                alert(`${name} さんの受講完了と感想を記録しました！`);
+                detailCommentInput.value = "";
+                document.getElementById("detail-direct-input-name").value = "";
+                detailNameSelect.value = "";
+                updateDetailInputVisibility();
+            });
+        }
+
+        // モーダル開閉制御
+        const settingModal = document.getElementById("setting-modal");
+        const historyModal = document.getElementById("history-modal");
+        const trainingStatusModal = document.getElementById("training-status-modal");
+        const editTrainingModal = document.getElementById("edit-training-modal");
+
+        const openSettingBtn = document.getElementById("open-setting-btn");
+        if (openSettingBtn) {
+            openSettingBtn.addEventListener("click", () => {
+                updateRoleOptions();
+                renderStaffTable();
+                settingModal.style.display = "flex";
+            });
+        }
+
+        const closeSettingBtn = document.getElementById("close-setting-btn");
+        if (closeSettingBtn) {
+            closeSettingBtn.addEventListener("click", () => {
+                settingModal.style.display = "none";
+            });
+        }
+
+        const openHistoryBtn = document.getElementById("open-history-btn");
+        if (openHistoryBtn) {
+            openHistoryBtn.addEventListener("click", () => {
+                renderHistoryTable();
+                historyModal.style.display = "flex";
+            });
+        }
+
+        const closeHistoryBtn = document.getElementById("close-history-btn");
+        if (closeHistoryBtn) {
+            closeHistoryBtn.addEventListener("click", () => {
+                historyModal.style.display = "none";
+            });
+        }
+
+        // コンテンツタブの切り替え処理
+        document.querySelectorAll(".content-tab-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                const tabName = e.target.getAttribute("data-tab");
+
+                // 全タブを非表示
+                document.getElementById("content-tab-video").style.display = "none";
+                document.getElementById("content-tab-slides").style.display = "none";
+                document.getElementById("content-tab-pdf").style.display = "none";
+
+                // 全タブボタンのスタイルをリセット
+                document.querySelectorAll(".content-tab-btn").forEach(b => {
+                    b.style.color = "#64748b";
+                    b.style.borderBottom = "3px solid transparent";
+                });
+
+                // 選択されたタブを表示
+                document.getElementById(`content-tab-${tabName}`).style.display = "block";
+                e.target.style.color = "#2563eb";
+                e.target.style.borderBottom = "3px solid #2563eb";
+            });
+        });
+
+        window.openTrainingStatusModal = () => {
+            if (!currentActiveKey) return;
+
+            const training = trainingData[currentActiveKey];
+            const completedCount = historyList.filter(item => item.trainingTitle === training.title).length;
+            const totalStaffCount = staffList.length;
+
+            // タイトル設定
+            document.getElementById("training-status-title").textContent = `「${training.title}」の受講状況`;
+
+            // 受講済みの職員を取得
+            const completedStaffRecords = historyList.filter(item => item.trainingTitle === training.title);
+            const completedStaffNames = new Set(completedStaffRecords.map(item => item.staffName));
+
+            // 受講済み職員リスト（感想付き）
+            const completedList = staffList.filter(staff => completedStaffNames.has(staff.name));
+            const completedHtml = completedList.length > 0 
+                ? completedList.map(staff => {
+                    const record = completedStaffRecords.find(r => r.staffName === staff.name);
+                    const comment = record ? record.comment : "";
+                    return `
+                    <div style="padding: 0.75rem; margin-bottom: 0.75rem; background-color: #fff; border-left: 4px solid #10b981; border-radius: 4px;">
+                        <div style="display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <span style="color: #10b981; font-weight: 600;">✅</span>
+                            <div>
+                                <div style="font-weight: 600; color: #1e293b;">${staff.name}</div>
+                                <div style="font-size: 0.75rem; color: #64748b;">（${staff.floor} / ${staff.role}）</div>
+                            </div>
+                        </div>
+                        ${comment ? `<div style="font-size: 0.8rem; color: #334155; background-color: #f8fafc; padding: 0.5rem; border-radius: 4px; margin-top: 0.5rem; white-space: pre-wrap;">${escapeHtml(comment)}</div>` : ''}
+                    </div>
+                `;
+                }).join("")
+                : '<div style="color: #94a3b8; padding: 0.5rem;">研修を受けた職員はいません</div>';
+
+            document.getElementById("completed-staff-list").innerHTML = completedHtml;
+
+            // 未受講職員リスト
+            const incompleteList = staffList.filter(staff => !completedStaffNames.has(staff.name));
+            const incompleteHtml = incompleteList.length > 0
+                ? incompleteList.map(staff => `
+                    <div style="padding: 0.75rem; margin-bottom: 0.75rem; background-color: #fff; border-left: 4px solid #ef4444; border-radius: 4px; opacity: 0.8;">
+                        <span style="color: #ef4444; font-weight: 600;">⏳</span> ${staff.name}
+                        <span style="font-size: 0.75rem; color: #64748b;">（${staff.floor} / ${staff.role}）</span>
+                    </div>
+                `).join("")
+                : '<div style="color: #94a3b8; padding: 0.5rem;">全員が研修を受けました！</div>';
+
+            document.getElementById("incomplete-staff-list").innerHTML = incompleteHtml;
+
+            trainingStatusModal.style.display = "flex";
+        };
+
+        const closeTrainingStatusBtn = document.getElementById("close-training-status-btn");
+        if (closeTrainingStatusBtn) {
+            closeTrainingStatusBtn.addEventListener("click", () => {
+                trainingStatusModal.style.display = "none";
+            });
+        }
+
+        // --- 編集モーダル処理 ---
+        const editTrainingBtn = document.getElementById("edit-training-btn");
+        const closeEditTrainingBtn = document.getElementById("close-edit-training-btn");
+        const saveEditTrainingBtn = document.getElementById("save-edit-training-btn");
+
+        if (editTrainingBtn) {
+            editTrainingBtn.addEventListener("click", () => {
+                if (!currentActiveKey) return;
+                const data = trainingData[currentActiveKey];
+
+                // フォーム値を入力
+                const [tagClass, tagText] = data.tagClass && data.tagText 
+                    ? [data.tagClass, data.tagText]
+                    : ["tag-mandatory", "研修報告"];
+                
+                document.getElementById("edit-input-tag-class").value = `${tagClass}|${tagText}`;
+                document.getElementById("edit-input-title").value = data.title || "";
+                document.getElementById("edit-input-summary").value = data.summary || data.description || "";
+                document.getElementById("edit-input-author-floor").value = data.authorFloor || "2階";
+                document.getElementById("edit-input-author-role").value = data.authorRole || "介護職";
+                document.getElementById("edit-input-created-date").value = data.createdDate || "";
+                document.getElementById("edit-input-video-url").value = data.videoUrl || "";
+                document.getElementById("edit-input-slides-url").value = data.slidesUrl || "";
+                document.getElementById("edit-input-pdf-url").value = data.pdfUrl || "";
+
+                // 作成者ドロップダウンを初期化
+                const editAuthorFloor = document.getElementById("edit-input-author-floor");
+                const editAuthorRole = document.getElementById("edit-input-author-role");
+                const editAuthorName = document.getElementById("edit-input-author-name");
+
+                const updateEditRoleOptions = () => {
+                    const selectedFloor = editAuthorFloor.value;
+                    const roles = rolesByFloor[selectedFloor] || [];
+                    editAuthorRole.innerHTML = roles.map(role => `<option value="${role}">${role}</option>`).join("");
+                    updateEditNameOptions();
+                };
+
+                const updateEditNameOptions = () => {
+                    const selectedFloor = editAuthorFloor.value;
+                    const selectedRole = editAuthorRole.value;
+                    const filteredStaff = staffList.filter(s => s.floor === selectedFloor && s.role === selectedRole);
+
+                    if (filteredStaff.length === 0) {
+                        editAuthorName.innerHTML = '<option value="">該当する職員がいません</option>';
+                    } else {
+                        editAuthorName.innerHTML = filteredStaff.map(staff =>
+                            `<option value="${staff.name}" ${staff.name === data.author ? 'selected' : ''}>${staff.name}</option>`
+                        ).join("");
+                    }
+                };
+
+                editAuthorFloor.removeEventListener("change", updateEditRoleOptions);
+                editAuthorRole.removeEventListener("change", updateEditNameOptions);
+                editAuthorFloor.addEventListener("change", updateEditRoleOptions);
+                editAuthorRole.addEventListener("change", updateEditNameOptions);
+
+                updateEditRoleOptions();
+
+                editTrainingModal.style.display = "flex";
+            });
+        }
+
+        if (closeEditTrainingBtn) {
+            closeEditTrainingBtn.addEventListener("click", () => {
+                editTrainingModal.style.display = "none";
+            });
+        }
+
+        if (saveEditTrainingBtn) {
+            saveEditTrainingBtn.addEventListener("click", () => {
+                if (!currentActiveKey) return;
+
+                const title = document.getElementById("edit-input-title").value.trim();
+                const summary = document.getElementById("edit-input-summary").value.trim();
+                const authorFloor = document.getElementById("edit-input-author-floor").value.trim();
+                const authorRole = document.getElementById("edit-input-author-role").value.trim();
+                const authorName = document.getElementById("edit-input-author-name").value.trim();
+                const createdDate = document.getElementById("edit-input-created-date").value.trim();
+                const videoUrl = document.getElementById("edit-input-video-url").value.trim();
+                const slidesUrl = document.getElementById("edit-input-slides-url").value.trim();
+                const pdfUrl = document.getElementById("edit-input-pdf-url").value.trim();
+                const [tagClass, tagText] = document.getElementById("edit-input-tag-class").value.split("|");
+
+                if (!title) {
+                    alert("研修タイトルを入力してください");
+                    return;
+                }
+
+                if (!summary) {
+                    alert("研修内容の要約を入力してください");
+                    return;
+                }
+
+                if (!authorName || authorName === "該当する職員がいません") {
+                    alert("作成者を選択してください");
+                    return;
+                }
+
+                if (!createdDate) {
+                    alert("作成日を選択してください");
+                    return;
+                }
+
+                // trainingData と customTrainings を更新
+                const updatedTraining = {
+                    tagClass,
+                    tagText,
+                    title,
+                    summary,
+                    author: authorName,
+                    authorFloor,
+                    authorRole,
+                    createdDate,
+                    videoUrl,
+                    slidesUrl,
+                    pdfUrl
+                };
+
+                trainingData[currentActiveKey] = updatedTraining;
+                customTrainings[currentActiveKey] = updatedTraining;
+                localStorage.setItem("roken_custom_trainings", JSON.stringify(customTrainings));
+
+                // 詳細ページを更新
+                openDetail(currentActiveKey);
+
+                // カードを更新
+                const card = document.getElementById(`card-${currentActiveKey}`);
+                if (card) {
+                    card.remove();
+                    renderTrainingCard(currentActiveKey, updatedTraining);
+                }
+
+                editTrainingModal.style.display = "none";
+                alert("研修情報を更新しました！");
+            });
+        }
+
+        // GoogleスライドのURLを埋め込み用に変換
+        const convertGoogleSlidesUrl = (url) => {
+            if (!url) return "";
+            const id = url.match(/\/d\/([^/]+)/)?.[1];
+            return id ? `https://docs.google.com/presentation/d/${id}/embed` : url;
+        };
+
+        // YouTubeのURLを埋め込み用に変換
+        const convertYoutubeUrl = (url) => {
+            if (!url) return "";
+            // パターン1: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+            let match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
+            if (match) {
+                return `https://www.youtube-nocookie.com/embed/${match[1]}`;
+            }
+            // 既に埋め込みURL形式の場合
+            if (url.includes("youtube-nocookie.com/embed")) {
+                return url;
+            }
+            return url;
+        };
+
+        // --- 画面遷移ロジック（詳細を開いた時にドロップダウン・コンテンツを初期化） ---
+        window.openDetail = (key) => {
+            currentActiveKey = key;
+            const data = trainingData[key];
+
+            if (!data) return;
+
+            document.getElementById("detail-tag").className = `card-tag ${data.tagClass}`;
+            document.getElementById("detail-tag").textContent = data.tagText;
+            document.getElementById("detail-title").textContent = data.title;
+            document.getElementById("detail-video").src = convertYoutubeUrl(data.videoUrl) || "";
+            document.getElementById("detail-slides").src = convertGoogleSlidesUrl(data.slidesUrl) || "";
+            
+            // descriptionがない場合はsummaryを使用
+            document.getElementById("detail-description").textContent = data.description || data.summary || "";
+
+            // 作成者と作成日を表示
+            const authorNameElem = document.getElementById("detail-author-name");
+            const createdDateElem = document.getElementById("detail-created-date");
+            if (authorNameElem) {
+                authorNameElem.textContent = data.author || "（未設定）";
+            }
+            if (createdDateElem) {
+                createdDateElem.textContent = data.createdDate || "（未設定）";
+            }
+
+            // 受講人数を計算して表示
+            const completedCount = historyList.filter(item => item.trainingTitle === data.title).length;
+            const totalStaffCount = staffList.length;
+            const completionStatus = `（${completedCount}/${totalStaffCount}人）研修済み`;
+            document.getElementById("detail-completion-status").textContent = completionStatus;
+
+            // PDF資料の表示制御
+            const pdfLink = document.getElementById("detail-pdf-link");
+            if (pdfLink) {
+                if (data.pdfUrl) {
+                    pdfLink.href = data.pdfUrl;
+                    pdfLink.style.display = "inline-block";
+                } else {
+                    pdfLink.style.display = "none";
+                }
+            }
+
+            // コンテンツタブの初期化：最初に存在するコンテンツのタブを表示
+            const hasVideo = data.videoUrl;
+            const hasSlides = data.slidesUrl;
+            const hasPdf = data.pdfUrl;
+
+            // 全タブを非表示
+            document.getElementById("content-tab-video").style.display = "none";
+            document.getElementById("content-tab-slides").style.display = "none";
+            document.getElementById("content-tab-pdf").style.display = "none";
+
+            // 全タブボタンのスタイルをリセット
+            document.querySelectorAll(".content-tab-btn").forEach(btn => {
+                btn.style.color = "#64748b";
+                btn.style.borderBottom = "3px solid transparent";
+            });
+
+            // 最初に利用可能なコンテンツタブを選択
+            if (hasVideo) {
+                document.getElementById("content-tab-video").style.display = "block";
+                document.querySelector("[data-tab='video']").style.color = "#2563eb";
+                document.querySelector("[data-tab='video']").style.borderBottom = "3px solid #2563eb";
+            } else if (hasSlides) {
+                document.getElementById("content-tab-slides").style.display = "block";
+                document.querySelector("[data-tab='slides']").style.color = "#2563eb";
+                document.querySelector("[data-tab='slides']").style.borderBottom = "3px solid #2563eb";
+            } else if (hasPdf) {
+                document.getElementById("content-tab-pdf").style.display = "block";
+                document.querySelector("[data-tab='pdf']").style.color = "#2563eb";
+                document.querySelector("[data-tab='pdf']").style.borderBottom = "3px solid #2563eb";
+            }
+
+            detailCommentInput.value = "";
+            detailFloorSelect.value = "2階";
+            updateDetailRoleOptions();
+            document.getElementById("detail-direct-input-name").value = "";
+            updateDetailInputVisibility();
+
+            listView.style.display = "none";
+            detailView.style.display = "block";
+        };
+
+        window.closeDetail = () => {
+            document.getElementById("detail-video").src = "";
+            document.getElementById("detail-slides").src = "";
+            detailView.style.display = "none";
+            listView.style.display = "block";
+            if (trainingStatusModal) trainingStatusModal.style.display = "none";
+            if (editTrainingModal) editTrainingModal.style.display = "none";
+        };
+
+        // デモ用簡易認証
+        const showMessage = (text, isError = false) => {
+            if (!statusMsg) return;
+            statusMsg.textContent = text;
+            statusMsg.className = `status-message active ${isError ? 'status-error' : 'status-info'}`;
+        };
+
+        const clearMessage = () => {
+            if (!statusMsg) return;
+            statusMsg.textContent = "";
+            statusMsg.className = "status-message";
+        };
+
+        const performLogin = () => {
+            if (!emailInput.value || !passwordInput.value) {
+                showMessage("メールアドレスとパスワードを入力してください", true);
+                return;
+            }
+            isLoggedIn = true;
+            showMessage("ログインしました");
+            setTimeout(() => {
+                loginWrapper.style.display = "none";
+                portalContainer.style.display = "block";
+                userDisplay.textContent = emailInput.value;
+                clearMessage();
+            }, 500);
+        };
+
+        const performLogout = () => {
+            isLoggedIn = false;
+            loginWrapper.style.display = "flex";
+            portalContainer.style.display = "none";
+            closeDetail();
+            if (settingModal) settingModal.style.display = "none";
+            if (historyModal) historyModal.style.display = "none";
+            const staffSelectionModal = document.getElementById("staff-selection-modal");
+            if (staffSelectionModal) staffSelectionModal.style.display = "none";
+            if (trainingStatusModal) trainingStatusModal.style.display = "none";
+            if (editTrainingModal) editTrainingModal.style.display = "none";
+            if (emailInput) emailInput.value = "";
+            if (passwordInput) passwordInput.value = "";
+        };
+
+        if (signupBtn) {
+            signupBtn.addEventListener("click", () => {
+                clearMessage();
+                performLogin();
+            });
+        }
+
+        if (loginBtn) {
+            loginBtn.addEventListener("click", () => {
+                clearMessage();
+                performLogin();
+            });
+        }
+
+        const googleLoginBtn = document.getElementById("google-login-btn");
+        if (googleLoginBtn) {
+            googleLoginBtn.addEventListener("click", () => {
+                clearMessage();
+                // 職員選択モーダルを表示
+                const staffSelectionFloor = document.getElementById("staff-selection-floor");
+                const staffSelectionRole = document.getElementById("staff-selection-role");
+                const staffSelectionName = document.getElementById("staff-selection-name");
+
+                // フロア選択時の処理
+                const updateSelectionRoleOptions = () => {
+                    if (!staffSelectionFloor || !staffSelectionRole) return;
+                    const selectedFloor = staffSelectionFloor.value;
+                    const roles = rolesByFloor[selectedFloor] || [];
+                    staffSelectionRole.innerHTML = roles.map(role => `<option value="${role}">${role}</option>`).join("");
+                    updateSelectionNameOptions();
+                };
+
+                // 職種選択時の処理
+                const updateSelectionNameOptions = () => {
+                    if (!staffSelectionFloor || !staffSelectionRole || !staffSelectionName) return;
+                    const selectedFloor = staffSelectionFloor.value;
+                    const selectedRole = staffSelectionRole.value;
+
+                    const filteredStaff = staffList.filter(s => s.floor === selectedFloor && s.role === selectedRole);
+
+                    if (filteredStaff.length === 0) {
+                        staffSelectionName.innerHTML = '<option value="">該当する職員がいません</option>';
+                    } else {
+                        staffSelectionName.innerHTML = filteredStaff.map(staff =>
+                            `<option value="${staff.name}">${staff.name}</option>`
+                        ).join("");
+                    }
+                };
+
+                // イベントリスナー設定
+                staffSelectionFloor.removeEventListener("change", updateSelectionRoleOptions);
+                staffSelectionRole.removeEventListener("change", updateSelectionNameOptions);
+                staffSelectionFloor.addEventListener("change", updateSelectionRoleOptions);
+                staffSelectionRole.addEventListener("change", updateSelectionNameOptions);
+
+                // 初期化
+                updateSelectionRoleOptions();
+
+                const staffSelectionModal = document.getElementById("staff-selection-modal");
+                staffSelectionModal.style.display = "flex";
+            });
+        }
+
+        // 職員選択モーダルを閉じる
+        const closeStaffSelectionBtn = document.getElementById("close-staff-selection-btn");
+        if (closeStaffSelectionBtn) {
+            closeStaffSelectionBtn.addEventListener("click", () => {
+                document.getElementById("staff-selection-modal").style.display = "none";
+            });
+        }
+
+        // 職員選択確定ボタン
+        const confirmStaffSelectionBtn = document.getElementById("confirm-staff-selection-btn");
+        if (confirmStaffSelectionBtn) {
+            confirmStaffSelectionBtn.addEventListener("click", () => {
+                const selectedName = document.getElementById("staff-selection-name").value.trim();
+
+                if (!selectedName || selectedName === "該当する職員がいません") {
+                    alert("職員を選択してください");
+                    return;
+                }
+
+                // ログイン完了
+                isLoggedIn = true;
+                showMessage("Googleでログインしました");
+                setTimeout(() => {
+                    loginWrapper.style.display = "none";
+                    portalContainer.style.display = "block";
+                    userDisplay.textContent = selectedName;
+                    document.getElementById("staff-selection-modal").style.display = "none";
+                    clearMessage();
+                }, 500);
+            });
+        }
+
+        if (logoutBtn) {
+            logoutBtn.addEventListener("click", () => {
+                clearMessage();
+                performLogout();
+            });
+        }
+
+        // --- 新規研修追加の管理ロジック ---
+        const addTrainingModal = document.getElementById("add-training-modal");
+        const openAddTrainingBtn = document.getElementById("open-add-training-btn");
+        const closeAddTrainingBtn = document.getElementById("close-add-training-btn");
+        const saveTrainingBtn = document.getElementById("save-training-btn");
+        const trainingGrid = document.getElementById("training-grid") || document.querySelector(".training-grid");
+
+        // ローカルストレージからカスタム研修を取得して反映
+        let customTrainings = JSON.parse(localStorage.getItem("roken_custom_trainings")) || {};
+        Object.assign(trainingData, customTrainings);
+
+        // カードを1枚動的に生成してグリッドに追加する関数
+        const renderTrainingCard = (key, data) => {
+            if (!trainingGrid) return;
+            const cardDesc = data.description || data.summary || "";
+            
+            // 説明文を180文字で省略
+            const truncatedDesc = cardDesc.length > 180 
+                ? cardDesc.substring(0, 180) + "..." 
+                : cardDesc;
+            
+            // 受講人数を計算
+            const completedCount = historyList.filter(item => item.trainingTitle === data.title).length;
+            const totalStaffCount = staffList.length;
+            const completionText = `（${completedCount}/${totalStaffCount}人）研修済み`;
+            
+            const cardHtml = `
+            <div class="training-card" id="card-${key}">
+                <div class="card-body" onclick="openDetail('${key}')" style="cursor: pointer;">
+                    <span class="card-tag ${data.tagClass}">${data.tagText}</span>
+                    <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 0.5rem;">
+                        <div style="margin-bottom: 0.25rem;"><span style="font-weight: 600;">作成者：</span>${escapeHtml(data.author || "（未設定）")}</div>
+                        <div><span style="font-weight: 600;">作成日：</span>${escapeHtml(data.createdDate || "（未設定）")}</div>
+                    </div>
+                    <a class="card-title-link">
+                        ${escapeHtml(data.title)} ➔
+                    </a>
+                    <p class="card-desc">${escapeHtml(truncatedDesc)}</p>
+                    <div class="card-footer" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <span style="font-size: 0.8rem; color: #64748b;">${completionText}</span>
+                        <button class="btn-detail" onclick="event.stopPropagation(); openDetail('${key}')">受講する</button>
+                    </div>
+                </div>
+            </div>
+        `;
+            trainingGrid.insertAdjacentHTML("afterbegin", cardHtml);
+        };
+
+        // 起動時に保存済みのカスタム研修を描画
+        Object.keys(customTrainings).forEach(key => {
+            renderTrainingCard(key, customTrainings[key]);
+        });
+
+        // モーダル開閉
+        if (openAddTrainingBtn) {
+            openAddTrainingBtn.addEventListener("click", () => {
+                // 作成者ドロップダウンの初期化
+                const authorFloorSelect = document.getElementById("input-author-floor");
+                const authorRoleSelect = document.getElementById("input-author-role");
+                const authorNameSelect = document.getElementById("input-author-name");
+
+                // フロア選択時の処理
+                const updateAuthorRoleOptions = () => {
+                    if (!authorFloorSelect || !authorRoleSelect) return;
+                    const selectedFloor = authorFloorSelect.value;
+                    const roles = rolesByFloor[selectedFloor] || [];
+                    authorRoleSelect.innerHTML = roles.map(role => `<option value="${role}">${role}</option>`).join("");
+                    updateAuthorNameOptions();
+                };
+
+                // 職種選択時の処理
+                const updateAuthorNameOptions = () => {
+                    if (!authorFloorSelect || !authorRoleSelect || !authorNameSelect) return;
+                    const selectedFloor = authorFloorSelect.value;
+                    const selectedRole = authorRoleSelect.value;
+
+                    const filteredStaff = staffList.filter(s => s.floor === selectedFloor && s.role === selectedRole);
+
+                    if (filteredStaff.length === 0) {
+                        authorNameSelect.innerHTML = '<option value="">該当する職員がいません</option>';
+                    } else {
+                        authorNameSelect.innerHTML = filteredStaff.map(staff =>
+                            `<option value="${staff.name}">${staff.name}</option>`
+                        ).join("");
+                    }
+                };
+
+                // イベントリスナー設定
+                authorFloorSelect.removeEventListener("change", updateAuthorRoleOptions);
+                authorRoleSelect.removeEventListener("change", updateAuthorNameOptions);
+                authorFloorSelect.addEventListener("change", updateAuthorRoleOptions);
+                authorRoleSelect.addEventListener("change", updateAuthorNameOptions);
+
+                // 初期化
+                updateAuthorRoleOptions();
+
+                // 作成日を本日の日付に設定
+                const today = new Date();
+                const dateStr = today.toISOString().split('T')[0];
+                document.getElementById("input-created-date").value = dateStr;
+
+                addTrainingModal.style.display = "flex";
+            });
+        }
+
+        if (closeAddTrainingBtn) {
+            closeAddTrainingBtn.addEventListener("click", () => {
+                addTrainingModal.style.display = "none";
+            });
+        }
+
+        // 保存ボタン押下時
+        if (saveTrainingBtn) {
+            saveTrainingBtn.addEventListener("click", () => {
+                const title = document.getElementById("input-title").value.trim();
+                const summary = document.getElementById("input-summary").value.trim();
+                const authorFloor = document.getElementById("input-author-floor").value.trim();
+                const authorRole = document.getElementById("input-author-role").value.trim();
+                const authorName = document.getElementById("input-author-name").value.trim();
+                const createdDate = document.getElementById("input-created-date").value.trim();
+                const videoUrl = document.getElementById("input-video-url").value.trim();
+                const slidesUrl = document.getElementById("input-slides-url").value.trim();
+                const pdfUrl = document.getElementById("input-pdf-url").value.trim();
+                const [tagClass, tagText] = document.getElementById("input-tag-class").value.split("|");
+
+                if (!title) {
+                    alert("研修タイトルを入力してください");
+                    return;
+                }
+
+                if (!summary) {
+                    alert("研修内容の要約を入力してください");
+                    return;
+                }
+
+                if (!authorName || authorName === "該当する職員がいません") {
+                    alert("作成者を選択してください");
+                    return;
+                }
+
+                if (!createdDate) {
+                    alert("作成日を選択してください");
+                    return;
+                }
+
+                const newKey = "custom_" + Date.now();
+                const newTraining = {
+                    tagClass,
+                    tagText,
+                    title,
+                    summary,
+                    author: authorName,
+                    authorFloor,
+                    authorRole,
+                    createdDate,
+                    videoUrl,
+                    slidesUrl,
+                    pdfUrl
+                };
+
+                // メモリとストレージに保存
+                trainingData[newKey] = newTraining;
+                customTrainings[newKey] = newTraining;
+                localStorage.setItem("roken_custom_trainings", JSON.stringify(customTrainings));
+
+                // 画面上にカードを追加
+                renderTrainingCard(newKey, newTraining);
+
+                // 入力フォームのクリアと閉じ
+                document.getElementById("input-title").value = "";
+                document.getElementById("input-summary").value = "";
+                document.getElementById("input-author-floor").value = "2階";
+                document.getElementById("input-author-role").value = "";
+                document.getElementById("input-author-name").value = "";
+                document.getElementById("input-created-date").value = "";
+                document.getElementById("input-video-url").value = "";
+                document.getElementById("input-slides-url").value = "";
+                document.getElementById("input-pdf-url").value = "";
+                addTrainingModal.style.display = "none";
+
+                alert("研修カードを追加しました！");
+            });
+        }
+    </script>
+
 </body>
+
 </html>
