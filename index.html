@@ -656,32 +656,21 @@
                         <div class="detail-header">
                             <span id="detail-tag" class="card-tag"></span>
                             <h1 id="detail-title" class="detail-title"></h1>
-                            <div id="detail-author-info"
-                                style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #e2e8f0; font-size: 0.85rem; color: #64748b;">
-                                <div style="margin-bottom: 0.4rem;"><span style="font-weight: 600;">作成者：</span><span
-                                        id="detail-author-name"></span></div>
-                                <div><span style="font-weight: 600;">作成日：</span><span id="detail-created-date"></span>
-                                </div>
+                            <div id="detail-author-info" style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #e2e8f0; font-size: 0.85rem; color: #64748b;">
+                                <div style="margin-bottom: 0.4rem;"><span style="font-weight: 600;">作成者：</span><span id="detail-author-name"></span></div>
+                                <div><span style="font-weight: 600;">作成日：</span><span id="detail-created-date"></span></div>
                             </div>
                         </div>
                     </div>
-                    <button id="edit-training-btn" class="btn btn-setting"
-                        style="padding: 0.5rem 1rem; white-space: nowrap;">✏️ 編集</button>
+                    <button id="edit-training-btn" class="btn btn-setting" style="padding: 0.5rem 1rem; white-space: nowrap;">✏️ 編集</button>
                 </div>
 
                 <div class="content-block" style="padding: 0; border: none; background: none; margin-bottom: 0;">
                     <!-- コンテンツ選択タブ -->
-                    <div
-                        style="display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; flex-wrap: wrap;">
-                        <button class="content-tab-btn active" data-tab="video"
-                            style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #2563eb; border-bottom: 3px solid #2563eb; margin-bottom: -2px;">📹
-                            動画</button>
-                        <button class="content-tab-btn" data-tab="slides"
-                            style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #64748b; border-bottom: 3px solid transparent; margin-bottom: -2px;">🖼️
-                            スライド</button>
-                        <button class="content-tab-btn" data-tab="pdf"
-                            style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #64748b; border-bottom: 3px solid transparent; margin-bottom: -2px;">📄
-                            PDF</button>
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; flex-wrap: wrap;">
+                        <button class="content-tab-btn active" data-tab="video" style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #2563eb; border-bottom: 3px solid #2563eb; margin-bottom: -2px;">📹 動画</button>
+                        <button class="content-tab-btn" data-tab="slides" style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #64748b; border-bottom: 3px solid transparent; margin-bottom: -2px;">🖼️ スライド</button>
+                        <button class="content-tab-btn" data-tab="pdf" style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #64748b; border-bottom: 3px solid transparent; margin-bottom: -2px;">📄 PDF</button>
                     </div>
 
                     <!-- 動画タブ -->
@@ -717,9 +706,7 @@
                 <!-- 受講者選択・感想入力・完了記録エリア -->
                 <div class="action-area">
                     <div class="form-row-group">
-                        <span id="detail-completion-status"
-                            style="font-size: 0.85rem; color: #2563eb; margin-bottom: 0.5rem; cursor: pointer; text-decoration: underline;"
-                            onclick="openTrainingStatusModal()"></span>
+                        <span id="detail-completion-status" style="font-size: 0.85rem; color: #2563eb; margin-bottom: 0.5rem; cursor: pointer; text-decoration: underline;" onclick="openTrainingStatusModal()"></span>
                         <label>受講者選択（フロア ➔ 職種 ➔ 氏名）:</label>
                         <div class="filter-select-group">
                             <select id="detail-floor-select">
@@ -741,8 +728,7 @@
                             </select>
                         </div>
                         <div id="detail-direct-input-group" style="display: none; width: 100%; margin-top: 0.5rem;">
-                            <input type="text" id="detail-direct-input-name" placeholder="氏名を直接入力"
-                                style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem;">
+                            <input type="text" id="detail-direct-input-name" placeholder="氏名を直接入力" style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem;">
                         </div>
                     </div>
 
@@ -864,8 +850,7 @@
                     </select>
                 </div>
 
-                <button id="confirm-staff-selection-btn" class="btn btn-primary"
-                    style="width: 100%; padding: 0.75rem;">選択してログイン</button>
+                <button id="confirm-staff-selection-btn" class="btn btn-primary" style="width: 100%; padding: 0.75rem;">選択してログイン</button>
             </div>
         </div>
     </div>
@@ -882,14 +867,12 @@
                 <p style="font-size:0.85rem; color:#64748b; margin-bottom:1rem;" id="training-status-title"></p>
 
                 <h3 style="font-size:0.95rem; color:#10b981; margin-top:1rem; margin-bottom:0.75rem;">✅ 研修済み</h3>
-                <div id="completed-staff-list"
-                    style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+                <div id="completed-staff-list" style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
                     <!-- 受講済みの職員が表示されます -->
                 </div>
 
                 <h3 style="font-size:0.95rem; color:#ef4444; margin-bottom:0.75rem;">⏳ 未受講</h3>
-                <div id="incomplete-staff-list"
-                    style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; padding: 1rem;">
+                <div id="incomplete-staff-list" style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; padding: 1rem;">
                     <!-- 未受講の職員が表示されます -->
                 </div>
             </div>
@@ -951,8 +934,7 @@
 
                 <label>
                     スライドURL (Google Slides) / 省略可：
-                    <input type="text" id="edit-input-slides-url"
-                        placeholder="https://docs.google.com/presentation/d/..."
+                    <input type="text" id="edit-input-slides-url" placeholder="https://docs.google.com/presentation/d/..."
                         style="width: 100%; padding: 8px; margin-top: 4px;">
                 </label>
 
@@ -1018,8 +1000,7 @@
 
                 <label>
                     動画URL (YouTube) / 省略可：
-                    <input type="text" id="input-video-url"
-                        placeholder="https://www.youtube.com/watch?v=... または https://youtu.be/..."
+                    <input type="text" id="input-video-url" placeholder="https://www.youtube.com/watch?v=... または https://youtu.be/..."
                         style="width: 100%; padding: 8px; margin-top: 4px;">
                 </label>
 
@@ -1218,7 +1199,7 @@
         const updateDetailInputVisibility = () => {
             const directInputGroup = document.getElementById("detail-direct-input-group");
             const directInputName = document.getElementById("detail-direct-input-name");
-
+            
             if (detailNameSelect.value === "direct-input") {
                 directInputGroup.style.display = "block";
                 directInputName.focus();
@@ -1285,7 +1266,7 @@
         // 職員削除
         window.deleteStaff = async (index) => {
             const deletingStaff = staffList[index];
-
+            
             // LocalStorage から削除
             staffList.splice(index, 1);
             localStorage.setItem("roken_staff_list", JSON.stringify(staffList));
@@ -1337,7 +1318,7 @@
         // --- 受講完了ボタン押下時の処理 ---
         const detailCompleteBtn = document.getElementById("detail-complete-btn");
         if (detailCompleteBtn) {
-            detailCompleteBtn.addEventListener("click", () => {
+            detailCompleteBtn.addEventListener("click", async () => {
                 if (!currentActiveKey) return;
 
                 const floor = detailFloorSelect.value;
@@ -1381,11 +1362,21 @@
                 historyList.unshift(newRecord);
                 localStorage.setItem("roken_history_list", JSON.stringify(historyList));
 
+                // Firestore に履歴を保存
+                try {
+                    const historyId = "history_" + Date.now();
+                    await setDoc(doc(db, "history", historyId), newRecord);
+                    console.log("✅ 受講履歴をFirestoreに保存しました:", name, training.title);
+                } catch (error) {
+                    console.error("❌ Firestore保存エラー:", error);
+                    alert("Firestoreへの保存に失敗しました");
+                }
+
                 // カード内の受講人数表示をリアルタイム更新
                 const completedCount = historyList.filter(item => item.trainingTitle === training.title).length;
                 const totalStaffCount = staffList.length;
                 const completionText = `（${completedCount}/${totalStaffCount}人）研修済み`;
-
+                
                 const card = document.getElementById(`card-${currentActiveKey}`);
                 if (card) {
                     const completionSpan = card.querySelector('.card-footer span');
@@ -1484,7 +1475,7 @@
 
             // 受講済み職員リスト（感想付き）
             const completedList = staffList.filter(staff => completedStaffNames.has(staff.name));
-            const completedHtml = completedList.length > 0
+            const completedHtml = completedList.length > 0 
                 ? completedList.map(staff => {
                     const record = completedStaffRecords.find(r => r.staffName === staff.name);
                     const comment = record ? record.comment : "";
@@ -1539,10 +1530,10 @@
                 const data = trainingData[currentActiveKey];
 
                 // フォーム値を入力
-                const [tagClass, tagText] = data.tagClass && data.tagText
+                const [tagClass, tagText] = data.tagClass && data.tagText 
                     ? [data.tagClass, data.tagText]
                     : ["tag-mandatory", "研修報告"];
-
+                
                 document.getElementById("edit-input-tag-class").value = `${tagClass}|${tagText}`;
                 document.getElementById("edit-input-title").value = data.title || "";
                 document.getElementById("edit-input-summary").value = data.summary || data.description || "";
@@ -1708,7 +1699,7 @@
             document.getElementById("detail-title").textContent = data.title;
             document.getElementById("detail-video").src = convertYoutubeUrl(data.videoUrl) || "";
             document.getElementById("detail-slides").src = convertGoogleSlidesUrl(data.slidesUrl) || "";
-
+            
             // descriptionがない場合はsummaryを使用
             document.getElementById("detail-description").textContent = data.description || data.summary || "";
 
@@ -1809,7 +1800,7 @@
             }
             isLoggedIn = true;
             showMessage("ログインしました");
-
+            
             // Firestore からデータを読み込み
             (async () => {
                 try {
@@ -1991,17 +1982,17 @@
         const renderTrainingCard = (key, data) => {
             if (!trainingGrid) return;
             const cardDesc = data.description || data.summary || "";
-
+            
             // 説明文を180文字で省略
-            const truncatedDesc = cardDesc.length > 180
-                ? cardDesc.substring(0, 180) + "..."
+            const truncatedDesc = cardDesc.length > 180 
+                ? cardDesc.substring(0, 180) + "..." 
                 : cardDesc;
-
+            
             // 受講人数を計算
             const completedCount = historyList.filter(item => item.trainingTitle === data.title).length;
             const totalStaffCount = staffList.length;
             const completionText = `（${completedCount}/${totalStaffCount}人）研修済み`;
-
+            
             const cardHtml = `
             <div class="training-card" id="card-${key}">
                 <div class="card-body" onclick="openDetail('${key}')" style="cursor: pointer;">
