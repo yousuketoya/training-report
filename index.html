@@ -242,7 +242,6 @@
 
         /* スマホサイズ（768px以下） */
         @media (max-width: 768px) {
-
             /* スマホではハンバーガーボタンを表示 */
             .hamburger-btn {
                 display: block;
@@ -654,39 +653,22 @@
         <div class="auth-card">
             <div class="auth-header">
                 <h1>老健 職員研修ポータル</h1>
-                <p>デモモード：任意のメール・パスワードでログインできます</p>
+                <p>職員番号と暗証番号を入力してください</p>
             </div>
 
             <div class="form-group">
-                <label for="email">メールアドレス</label>
-                <input type="email" id="email" class="form-control" placeholder="example@facility.or.jp">
+                <label for="login-id">職員番号</label>
+                <input type="text" id="login-id" class="form-control" placeholder="例：01" inputmode="numeric" maxlength="2">
             </div>
 
             <div class="form-group">
-                <label for="password">パスワード</label>
-                <input type="password" id="password" class="form-control" placeholder="••••••••">
+                <label for="login-pin">暗証番号（4桁）</label>
+                <input type="password" id="login-pin" class="form-control" placeholder="••••" inputmode="numeric" maxlength="4">
             </div>
 
             <div class="btn-group">
                 <button id="login-btn" class="btn btn-primary" style="flex:1;">ログイン</button>
-                <button id="signup-btn" class="btn btn-secondary" style="flex:1;">新規登録</button>
             </div>
-
-            <div class="divider">または</div>
-
-            <button id="google-login-btn" class="btn btn-google">
-                <svg width="18" height="18" viewBox="0 0 24 24">
-                    <path fill="#4285F4"
-                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                    <path fill="#34A853"
-                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                    <path fill="#FBBC05"
-                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
-                    <path fill="#EA4335"
-                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
-                </svg>
-                Googleでログイン
-            </button>
 
             <div id="status-message" class="status-message"></div>
         </div>
@@ -732,32 +714,21 @@
                         <div class="detail-header">
                             <span id="detail-tag" class="card-tag"></span>
                             <h1 id="detail-title" class="detail-title"></h1>
-                            <div id="detail-author-info"
-                                style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #e2e8f0; font-size: 0.85rem; color: #64748b;">
-                                <div style="margin-bottom: 0.4rem;"><span style="font-weight: 600;">作成者：</span><span
-                                        id="detail-author-name"></span></div>
-                                <div><span style="font-weight: 600;">作成日：</span><span id="detail-created-date"></span>
-                                </div>
+                            <div id="detail-author-info" style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #e2e8f0; font-size: 0.85rem; color: #64748b;">
+                                <div style="margin-bottom: 0.4rem;"><span style="font-weight: 600;">作成者：</span><span id="detail-author-name"></span></div>
+                                <div><span style="font-weight: 600;">作成日：</span><span id="detail-created-date"></span></div>
                             </div>
                         </div>
                     </div>
-                    <button id="edit-training-btn" class="btn btn-setting"
-                        style="padding: 0.5rem 1rem; white-space: nowrap;">✏️ 編集</button>
+                    <button id="edit-training-btn" class="btn btn-setting" style="padding: 0.5rem 1rem; white-space: nowrap;">✏️ 編集</button>
                 </div>
 
                 <div class="content-block" style="padding: 0; border: none; background: none; margin-bottom: 0;">
                     <!-- コンテンツ選択タブ -->
-                    <div
-                        style="display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; flex-wrap: wrap;">
-                        <button class="content-tab-btn active" data-tab="video"
-                            style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #2563eb; border-bottom: 3px solid #2563eb; margin-bottom: -2px;">📹
-                            動画</button>
-                        <button class="content-tab-btn" data-tab="slides"
-                            style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #64748b; border-bottom: 3px solid transparent; margin-bottom: -2px;">🖼️
-                            スライド</button>
-                        <button class="content-tab-btn" data-tab="pdf"
-                            style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #64748b; border-bottom: 3px solid transparent; margin-bottom: -2px;">📄
-                            PDF</button>
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; flex-wrap: wrap;">
+                        <button class="content-tab-btn active" data-tab="video" style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #2563eb; border-bottom: 3px solid #2563eb; margin-bottom: -2px;">📹 動画</button>
+                        <button class="content-tab-btn" data-tab="slides" style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #64748b; border-bottom: 3px solid transparent; margin-bottom: -2px;">🖼️ スライド</button>
+                        <button class="content-tab-btn" data-tab="pdf" style="padding: 0.5rem 1rem; background: none; border: none; cursor: pointer; font-weight: 600; color: #64748b; border-bottom: 3px solid transparent; margin-bottom: -2px;">📄 PDF</button>
                     </div>
 
                     <!-- 動画タブ -->
@@ -793,9 +764,7 @@
                 <!-- 受講者選択・感想入力・完了記録エリア -->
                 <div class="action-area">
                     <div class="form-row-group">
-                        <span id="detail-completion-status"
-                            style="font-size: 0.85rem; color: #2563eb; margin-bottom: 0.5rem; cursor: pointer; text-decoration: underline;"
-                            onclick="openTrainingStatusModal()"></span>
+                        <span id="detail-completion-status" style="font-size: 0.85rem; color: #2563eb; margin-bottom: 0.5rem; cursor: pointer; text-decoration: underline;" onclick="openTrainingStatusModal()"></span>
                         <label>受講者選択（フロア ➔ 職種 ➔ 氏名）:</label>
                         <div class="filter-select-group">
                             <select id="detail-floor-select">
@@ -817,8 +786,7 @@
                             </select>
                         </div>
                         <div id="detail-direct-input-group" style="display: none; width: 100%; margin-top: 0.5rem;">
-                            <input type="text" id="detail-direct-input-name" placeholder="氏名を直接入力"
-                                style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem;">
+                            <input type="text" id="detail-direct-input-name" placeholder="氏名を直接入力" style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.85rem;">
                         </div>
                     </div>
 
@@ -843,7 +811,7 @@
             </div>
 
             <div class="modal-body">
-                <p style="font-size:0.85rem; color:#64748b; margin-bottom:1rem;">所属フロア・職種を選択し、氏名を登録してください。</p>
+                <p style="font-size:0.85rem; color:#64748b; margin-bottom:1rem;">所属フロア・職種・氏名に加えて、ログイン用の職員番号・暗証番号・権限を設定してください。</p>
 
                 <div class="form-row">
                     <select id="staff-floor">
@@ -863,8 +831,21 @@
                     </select>
 
                     <input type="text" id="staff-name" placeholder="氏名を入力">
+                </div>
 
+                <div class="form-row">
+                    <input type="text" id="staff-login-id" placeholder="職員番号（例：01）" inputmode="numeric" maxlength="2" style="flex:1; min-width: 100px;">
+                    <input type="password" id="staff-pin" placeholder="暗証番号（4桁）" inputmode="numeric" maxlength="4" style="flex:1; min-width: 100px;">
+                    <select id="staff-permission" style="flex:1; min-width: 110px;">
+                        <option value="staff">一般職員</option>
+                        <option value="editor">編集者</option>
+                        <option value="admin">管理者</option>
+                    </select>
                     <button id="add-staff-btn" class="btn btn-primary" style="padding: 0.5rem 1rem;">追加</button>
+                </div>
+                <div id="staff-form-mode-note" style="display:none; font-size:0.8rem; color:#2563eb; margin-bottom:0.5rem;">
+                    編集中です。「更新」ボタンで保存するか、「キャンセル」で編集をやめられます。
+                    <button id="cancel-staff-edit-btn" class="btn btn-secondary" style="padding: 0.2rem 0.6rem; font-size:0.75rem; margin-left: 0.5rem;">キャンセル</button>
                 </div>
 
                 <h3 style="font-size:0.95rem; color:#1e293b; margin-top:1.5rem; margin-bottom:0.5rem;">登録済み職員一覧</h3>
@@ -875,7 +856,9 @@
                             <th>フロア</th>
                             <th>職種</th>
                             <th>氏名</th>
-                            <th style="width: 50px;">操作</th>
+                            <th>職員番号</th>
+                            <th>権限</th>
+                            <th style="width: 90px;">操作</th>
                         </tr>
                     </thead>
                     <tbody id="staff-table-body">
@@ -915,37 +898,6 @@
         </div>
     </div>
 
-    <!-- 6. Googleログイン時の職員選択モーダル -->
-    <div id="staff-selection-modal" class="modal-overlay" style="display: none;">
-        <div class="modal-content" style="max-width: 400px;">
-            <div class="modal-header">
-                <h2>📋 職員を選択してください</h2>
-                <button id="close-staff-selection-btn" class="btn-close">&times;</button>
-            </div>
-
-            <div class="modal-body">
-                <p style="font-size:0.85rem; color:#64748b; margin-bottom:1rem;">ログイン時に使用する職員を選択してください。</p>
-
-                <div class="form-row-group">
-                    <label>フロア ➔ 職種 ➔ 氏名</label>
-                    <select id="staff-selection-floor" style="width: 100%; padding: 8px; margin-bottom: 0.5rem;">
-                        <option value="2階">2階</option>
-                        <option value="1階">1階</option>
-                    </select>
-                    <select id="staff-selection-role" style="width: 100%; padding: 8px; margin-bottom: 0.5rem;">
-                        <option value="介護職">介護職</option>
-                    </select>
-                    <select id="staff-selection-name" style="width: 100%; padding: 8px; margin-bottom: 1rem;">
-                        <option value="">職員を選択</option>
-                    </select>
-                </div>
-
-                <button id="confirm-staff-selection-btn" class="btn btn-primary"
-                    style="width: 100%; padding: 0.75rem;">選択してログイン</button>
-            </div>
-        </div>
-    </div>
-
     <!-- 7. 研修受講状況確認モーダル -->
     <div id="training-status-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
@@ -958,14 +910,12 @@
                 <p style="font-size:0.85rem; color:#64748b; margin-bottom:1rem;" id="training-status-title"></p>
 
                 <h3 style="font-size:0.95rem; color:#10b981; margin-top:1rem; margin-bottom:0.75rem;">✅ 研修済み</h3>
-                <div id="completed-staff-list"
-                    style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
+                <div id="completed-staff-list" style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 1rem; margin-bottom: 1.5rem;">
                     <!-- 受講済みの職員が表示されます -->
                 </div>
 
                 <h3 style="font-size:0.95rem; color:#ef4444; margin-bottom:0.75rem;">⏳ 未受講</h3>
-                <div id="incomplete-staff-list"
-                    style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; padding: 1rem;">
+                <div id="incomplete-staff-list" style="background-color: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; padding: 1rem;">
                     <!-- 未受講の職員が表示されます -->
                 </div>
             </div>
@@ -1027,8 +977,7 @@
 
                 <label>
                     スライドURL (Google Slides) / 省略可：
-                    <input type="text" id="edit-input-slides-url"
-                        placeholder="https://docs.google.com/presentation/d/..."
+                    <input type="text" id="edit-input-slides-url" placeholder="https://docs.google.com/presentation/d/..."
                         style="width: 100%; padding: 8px; margin-top: 4px;">
                 </label>
 
@@ -1094,8 +1043,7 @@
 
                 <label>
                     動画URL (YouTube) / 省略可：
-                    <input type="text" id="input-video-url"
-                        placeholder="https://www.youtube.com/watch?v=... または https://youtu.be/..."
+                    <input type="text" id="input-video-url" placeholder="https://www.youtube.com/watch?v=... または https://youtu.be/..."
                         style="width: 100%; padding: 8px; margin-top: 4px;">
                 </label>
 
@@ -1207,8 +1155,10 @@
     </script>
 
     <script>
-        // ===== デモモード：Firebase なし、ローカル認証のみ =====
+        // ===== 職員番号＋暗証番号によるログイン =====
         let isLoggedIn = false;
+        let currentUserRole = null; // "admin" | "editor" | "staff"
+        let currentUserName = "";
 
         const loginWrapper = document.getElementById("login-wrapper");
         const portalContainer = document.getElementById("portal-container");
@@ -1216,9 +1166,8 @@
         const listView = document.getElementById("list-view");
         const detailView = document.getElementById("detail-view");
 
-        const emailInput = document.getElementById("email");
-        const passwordInput = document.getElementById("password");
-        const signupBtn = document.getElementById("signup-btn");
+        const loginIdInput = document.getElementById("login-id");
+        const loginPinInput = document.getElementById("login-pin");
         const loginBtn = document.getElementById("login-btn");
         const logoutBtn = document.getElementById("logout-btn");
         const statusMsg = document.getElementById("status-message");
@@ -1241,7 +1190,20 @@
         const staffFloorSelect = document.getElementById("staff-floor");
         const staffRoleSelect = document.getElementById("staff-role");
         const staffNameInput = document.getElementById("staff-name");
+        const staffLoginIdInput = document.getElementById("staff-login-id");
+        const staffPinInput = document.getElementById("staff-pin");
+        const staffPermissionSelect = document.getElementById("staff-permission");
         const staffTableBody = document.getElementById("staff-table-body");
+
+        // 職員編集中のインデックス（nullなら新規追加モード）
+        let editingStaffIndex = null;
+
+        // 権限名を日本語表示に変換
+        const permissionLabel = (permission) => {
+            if (permission === "admin") return "管理者";
+            if (permission === "editor") return "編集者";
+            return "一般職員";
+        };
 
         // 詳細ページの3段階絞り込み用要素
         const detailFloorSelect = document.getElementById("detail-floor-select");
@@ -1294,7 +1256,7 @@
         const updateDetailInputVisibility = () => {
             const directInputGroup = document.getElementById("detail-direct-input-group");
             const directInputName = document.getElementById("detail-direct-input-name");
-
+            
             if (detailNameSelect.value === "direct-input") {
                 directInputGroup.style.display = "block";
                 directInputName.focus();
@@ -1318,42 +1280,125 @@
         <tr>
             <td>${staff.floor}</td>
             <td>${staff.role}</td>
-            <td>${staff.name}</td>
-            <td><button class="btn-delete" onclick="deleteStaff(${index})">削除</button></td>
+            <td>${escapeHtml(staff.name)}</td>
+            <td>${staff.loginId || "（未設定）"}</td>
+            <td>${permissionLabel(staff.permission)}</td>
+            <td>
+                <button class="btn-setting" style="padding:0.2rem 0.5rem; font-size:0.75rem;" onclick="editStaff(${index})">編集</button>
+                <button class="btn-delete" onclick="deleteStaff(${index})">削除</button>
+            </td>
         </tr>
-    `).join("") : '<tr><td colspan="4" style="text-align:center; color:#94a3b8;">職員が登録されていません</td></tr>';
+    `).join("") : '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">職員が登録されていません</td></tr>';
         };
 
-        // 職員追加
+        // 職員フォームを新規追加モードにリセット
+        const resetStaffForm = () => {
+            editingStaffIndex = null;
+            staffNameInput.value = "";
+            staffLoginIdInput.value = "";
+            staffPinInput.value = "";
+            staffPermissionSelect.value = "staff";
+            staffFloorSelect.value = "2階";
+            updateRoleOptions();
+            document.getElementById("add-staff-btn").textContent = "追加";
+            document.getElementById("staff-form-mode-note").style.display = "none";
+        };
+
+        // 既存職員をフォームに読み込んで編集モードにする
+        window.editStaff = (index) => {
+            const staff = staffList[index];
+            editingStaffIndex = index;
+            staffFloorSelect.value = staff.floor;
+            updateRoleOptions();
+            staffRoleSelect.value = staff.role;
+            staffNameInput.value = staff.name;
+            staffLoginIdInput.value = staff.loginId || "";
+            staffPinInput.value = staff.pin || "";
+            staffPermissionSelect.value = staff.permission || "staff";
+            document.getElementById("add-staff-btn").textContent = "更新";
+            document.getElementById("staff-form-mode-note").style.display = "block";
+            staffNameInput.scrollIntoView({ behavior: "smooth", block: "center" });
+        };
+
+        const cancelStaffEditBtn = document.getElementById("cancel-staff-edit-btn");
+        if (cancelStaffEditBtn) {
+            cancelStaffEditBtn.addEventListener("click", () => {
+                resetStaffForm();
+            });
+        }
+
+        // 職員追加・更新
         const addStaffBtn = document.getElementById("add-staff-btn");
         if (addStaffBtn) {
             addStaffBtn.addEventListener("click", async () => {
                 const floor = staffFloorSelect.value;
                 const role = staffRoleSelect.value;
                 const name = staffNameInput.value.trim();
+                const loginId = staffLoginIdInput.value.trim().padStart(2, "0");
+                const pin = staffPinInput.value.trim();
+                const permission = staffPermissionSelect.value;
 
                 if (!name) {
                     alert("氏名を入力してください");
                     return;
                 }
 
-                const newStaff = { floor, role, name };
-
-                // LocalStorage に保存
-                staffList.push(newStaff);
-                localStorage.setItem("roken_staff_list", JSON.stringify(staffList));
-
-                // Firestore に保存
-                try {
-                    const staffId = `${floor}_${role}_${name}`.replace(/\s+/g, '_');
-                    await setDoc(doc(db, "staff", staffId), newStaff);
-                    console.log("✅ 職員をFirestoreに保存しました:", name);
-                } catch (error) {
-                    console.error("❌ Firestore保存エラー:", error);
-                    alert("Firestoreへの保存に失敗しました");
+                if (loginId && !/^\d{2}$/.test(loginId)) {
+                    alert("職員番号は2桁の数字で入力してください（例：01）");
+                    return;
                 }
 
-                staffNameInput.value = "";
+                if (pin && !/^\d{4}$/.test(pin)) {
+                    alert("暗証番号は4桁の数字で入力してください");
+                    return;
+                }
+
+                // 職員番号の重複チェック（自分自身は除く）
+                if (loginId) {
+                    const duplicate = staffList.some((s, i) => s.loginId === loginId && i !== editingStaffIndex);
+                    if (duplicate) {
+                        alert(`職員番号「${loginId}」は既に使用されています`);
+                        return;
+                    }
+                }
+
+                if (editingStaffIndex !== null) {
+                    // --- 更新モード ---
+                    const existing = staffList[editingStaffIndex];
+                    const staffId = existing.id || `${existing.floor}_${existing.role}_${existing.name}`.replace(/\s+/g, '_');
+                    const updatedStaff = { ...existing, floor, role, name, loginId, pin, permission, id: staffId };
+
+                    staffList[editingStaffIndex] = updatedStaff;
+                    localStorage.setItem("roken_staff_list", JSON.stringify(staffList));
+
+                    try {
+                        await setDoc(doc(db, "staff", staffId), updatedStaff);
+                        console.log("✅ 職員情報をFirestoreに更新しました:", name);
+                    } catch (error) {
+                        console.error("❌ Firestore更新エラー:", error);
+                        alert("Firestoreへの更新に失敗しました");
+                    }
+
+                    resetStaffForm();
+                } else {
+                    // --- 新規追加モード ---
+                    const staffId = "staff_" + Date.now();
+                    const newStaff = { floor, role, name, loginId, pin, permission, id: staffId };
+
+                    staffList.push(newStaff);
+                    localStorage.setItem("roken_staff_list", JSON.stringify(staffList));
+
+                    try {
+                        await setDoc(doc(db, "staff", staffId), newStaff);
+                        console.log("✅ 職員をFirestoreに保存しました:", name);
+                    } catch (error) {
+                        console.error("❌ Firestore保存エラー:", error);
+                        alert("Firestoreへの保存に失敗しました");
+                    }
+
+                    resetStaffForm();
+                }
+
                 renderStaffTable();
             });
         }
@@ -1361,18 +1406,22 @@
         // 職員削除
         window.deleteStaff = async (index) => {
             const deletingStaff = staffList[index];
-
+            
             // LocalStorage から削除
             staffList.splice(index, 1);
             localStorage.setItem("roken_staff_list", JSON.stringify(staffList));
 
             // Firestore からも削除
             try {
-                const staffId = `${deletingStaff.floor}_${deletingStaff.role}_${deletingStaff.name}`.replace(/\s+/g, '_');
+                const staffId = deletingStaff.id || `${deletingStaff.floor}_${deletingStaff.role}_${deletingStaff.name}`.replace(/\s+/g, '_');
                 await deleteDoc(doc(db, "staff", staffId));
                 console.log("✅ 職員をFirestoreから削除しました:", deletingStaff.name);
             } catch (error) {
                 console.error("❌ Firestore削除エラー:", error);
+            }
+
+            if (editingStaffIndex === index) {
+                resetStaffForm();
             }
 
             renderStaffTable();
@@ -1471,7 +1520,7 @@
                 const completedCount = historyList.filter(item => item.trainingTitle === training.title).length;
                 const totalStaffCount = staffList.length;
                 const completionText = `（${completedCount}/${totalStaffCount}人）研修済み`;
-
+                
                 const card = document.getElementById(`card-${currentActiveKey}`);
                 if (card) {
                     const completionSpan = card.querySelector('.card-footer span');
@@ -1517,8 +1566,8 @@
 
         // ページ外をクリックしたときにメニューを閉じる
         document.addEventListener("click", (e) => {
-            if (userInfoMenu && hamburgerBtn &&
-                !hamburgerBtn.contains(e.target) &&
+            if (userInfoMenu && hamburgerBtn && 
+                !hamburgerBtn.contains(e.target) && 
                 !userInfoMenu.contains(e.target)) {
                 userInfoMenu.classList.remove("active");
             }
@@ -1599,7 +1648,7 @@
 
             // 受講済み職員リスト（感想付き）
             const completedList = staffList.filter(staff => completedStaffNames.has(staff.name));
-            const completedHtml = completedList.length > 0
+            const completedHtml = completedList.length > 0 
                 ? completedList.map(staff => {
                     const record = completedStaffRecords.find(r => r.staffName === staff.name);
                     const comment = record ? record.comment : "";
@@ -1654,10 +1703,10 @@
                 const data = trainingData[currentActiveKey];
 
                 // フォーム値を入力
-                const [tagClass, tagText] = data.tagClass && data.tagText
+                const [tagClass, tagText] = data.tagClass && data.tagText 
                     ? [data.tagClass, data.tagText]
                     : ["tag-mandatory", "研修報告"];
-
+                
                 document.getElementById("edit-input-tag-class").value = `${tagClass}|${tagText}`;
                 document.getElementById("edit-input-title").value = data.title || "";
                 document.getElementById("edit-input-summary").value = data.summary || data.description || "";
@@ -1818,12 +1867,14 @@
 
             if (!data) return;
 
+            if (window.applyDetailEditPermission) window.applyDetailEditPermission();
+
             document.getElementById("detail-tag").className = `card-tag ${data.tagClass}`;
             document.getElementById("detail-tag").textContent = data.tagText;
             document.getElementById("detail-title").textContent = data.title;
             document.getElementById("detail-video").src = convertYoutubeUrl(data.videoUrl) || "";
             document.getElementById("detail-slides").src = convertGoogleSlidesUrl(data.slidesUrl) || "";
-
+            
             // descriptionがない場合はsummaryを使用
             document.getElementById("detail-description").textContent = data.description || data.summary || "";
 
@@ -1902,7 +1953,7 @@
             listView.style.display = "block";
             if (trainingStatusModal) trainingStatusModal.style.display = "none";
             if (editTrainingModal) editTrainingModal.style.display = "none";
-
+            
             // ハンバーガーメニューも閉じる
             const userInfoMenu = document.getElementById("user-info-menu");
             if (userInfoMenu) {
@@ -1923,82 +1974,133 @@
             statusMsg.className = "status-message";
         };
 
-        const performLogin = () => {
-            if (!emailInput.value || !passwordInput.value) {
-                showMessage("メールアドレスとパスワードを入力してください", true);
+        // ログイン成功後の共通データ読み込み処理
+        const loadDataAfterLogin = async () => {
+            const firestoreStaff = await loadStaffFromFirestore();
+            if (firestoreStaff.length > 0) {
+                staffList = firestoreStaff;
+                console.log("✅ Firestore の職員情報を使用");
+            }
+
+            const firestoreTrainings = await loadTrainingsFromFirestore();
+            if (Object.keys(firestoreTrainings).length > 0) {
+                Object.assign(trainingData, firestoreTrainings);
+                console.log("✅ Firestore の研修情報を使用");
+            }
+
+            updateDetailRoleOptions();
+
+            // 既存のカードを全削除してから再表示
+            if (trainingGrid) {
+                trainingGrid.innerHTML = "";
+            }
+            Object.keys(trainingData).forEach(key => {
+                renderTrainingCard(key, trainingData[key]);
+            });
+
+            console.log("📊 ログイン後データ準備完了");
+        };
+
+        // 権限に応じてボタンの表示・非表示を切り替える
+        const applyRolePermissions = () => {
+            const openAddTrainingBtnElem = document.getElementById("open-add-training-btn");
+            const openHistoryBtnElem = document.getElementById("open-history-btn");
+            const openSettingBtnElem = document.getElementById("open-setting-btn");
+
+            // 管理者・編集者のみ：研修追加
+            if (openAddTrainingBtnElem) {
+                openAddTrainingBtnElem.style.display = (currentUserRole === "admin" || currentUserRole === "editor") ? "" : "none";
+            }
+            // 管理者のみ：設定・履歴
+            if (openSettingBtnElem) {
+                openSettingBtnElem.style.display = (currentUserRole === "admin") ? "" : "none";
+            }
+            if (openHistoryBtnElem) {
+                openHistoryBtnElem.style.display = (currentUserRole === "admin") ? "" : "none";
+            }
+        };
+
+        // 研修詳細ページ内の編集ボタンも権限で制御（openDetail内でも呼ばれる）
+        window.applyDetailEditPermission = () => {
+            const editBtn = document.getElementById("edit-training-btn");
+            if (editBtn) {
+                editBtn.style.display = (currentUserRole === "admin" || currentUserRole === "editor") ? "" : "none";
+            }
+        };
+
+        const performLogin = async () => {
+            const loginId = loginIdInput.value.trim().padStart(2, "0");
+            const pin = loginPinInput.value.trim();
+
+            if (!loginId || !pin) {
+                showMessage("職員番号と暗証番号を入力してください", true);
                 return;
             }
-            isLoggedIn = true;
-            showMessage("ログインしました");
 
-            // Firestore からデータを読み込み
-            (async () => {
-                try {
-                    const firestoreStaff = await loadStaffFromFirestore();
-                    if (firestoreStaff.length > 0) {
-                        staffList = firestoreStaff;
-                        console.log("✅ Firestore の職員情報を使用");
-                    }
+            showMessage("確認中...");
 
-                    const firestoreTrainings = await loadTrainingsFromFirestore();
-                    if (Object.keys(firestoreTrainings).length > 0) {
-                        Object.assign(trainingData, firestoreTrainings);
-                        console.log("✅ Firestore の研修情報を使用");
-                    }
-
-                    updateDetailRoleOptions();
-
-                    console.log("📊 ログイン後データ準備完了");
-
-                    // 既存のカードを全削除
-                    if (trainingGrid) {
-                        trainingGrid.innerHTML = "";
-                    }
-
-                    // Firestore から読み込んだ全研修を表示
-                    Object.keys(trainingData).forEach(key => {
-                        renderTrainingCard(key, trainingData[key]);
-                    });
-
-                    // iPhone でも確認できるようにアラート表示
-                    const staffCount = staffList.length;
-                    const trainingCount = Object.keys(trainingData).length;
-                    alert(`✅ ログイン完了\n\n職員情報: ${staffCount}人\n研修情報: ${trainingCount}件\n\nFirestore から正常にデータを読み込みました！`);
-                } catch (error) {
-                    console.error("❌ データ読み込みエラー:", error);
-                    alert(`❌ エラーが発生しました\n\n${error.message}`);
+            try {
+                // まず最新の職員情報を Firestore から取得
+                const firestoreStaff = await loadStaffFromFirestore();
+                if (firestoreStaff.length > 0) {
+                    staffList = firestoreStaff;
                 }
-            })();
 
-            setTimeout(() => {
-                loginWrapper.style.display = "none";
-                portalContainer.style.display = "block";
-                userDisplay.textContent = emailInput.value;
-                clearMessage();
-            }, 500);
+                const matchedStaff = staffList.find(s => s.loginId === loginId && s.pin === pin);
+
+                if (!matchedStaff) {
+                    showMessage("職員番号または暗証番号が違います", true);
+                    return;
+                }
+
+                isLoggedIn = true;
+                currentUserRole = matchedStaff.permission || "staff";
+                currentUserName = matchedStaff.name;
+
+                showMessage("ログインしました");
+
+                const firestoreTrainings = await loadTrainingsFromFirestore();
+                if (Object.keys(firestoreTrainings).length > 0) {
+                    Object.assign(trainingData, firestoreTrainings);
+                }
+
+                updateDetailRoleOptions();
+
+                if (trainingGrid) {
+                    trainingGrid.innerHTML = "";
+                }
+                Object.keys(trainingData).forEach(key => {
+                    renderTrainingCard(key, trainingData[key]);
+                });
+
+                applyRolePermissions();
+
+                setTimeout(() => {
+                    loginWrapper.style.display = "none";
+                    portalContainer.style.display = "block";
+                    userDisplay.textContent = currentUserName;
+                    clearMessage();
+                }, 300);
+            } catch (error) {
+                console.error("❌ ログインエラー:", error);
+                showMessage("ログイン処理でエラーが発生しました", true);
+            }
         };
 
         const performLogout = () => {
             isLoggedIn = false;
+            currentUserRole = null;
+            currentUserName = "";
             loginWrapper.style.display = "flex";
             portalContainer.style.display = "none";
             closeDetail();
             if (settingModal) settingModal.style.display = "none";
             if (historyModal) historyModal.style.display = "none";
-            const staffSelectionModal = document.getElementById("staff-selection-modal");
-            if (staffSelectionModal) staffSelectionModal.style.display = "none";
             if (trainingStatusModal) trainingStatusModal.style.display = "none";
             if (editTrainingModal) editTrainingModal.style.display = "none";
-            if (emailInput) emailInput.value = "";
-            if (passwordInput) passwordInput.value = "";
+            if (loginIdInput) loginIdInput.value = "";
+            if (loginPinInput) loginPinInput.value = "";
         };
-
-        if (signupBtn) {
-            signupBtn.addEventListener("click", () => {
-                clearMessage();
-                performLogin();
-            });
-        }
 
         if (loginBtn) {
             loginBtn.addEventListener("click", () => {
@@ -2007,118 +2109,13 @@
             });
         }
 
-        const googleLoginBtn = document.getElementById("google-login-btn");
-        if (googleLoginBtn) {
-            googleLoginBtn.addEventListener("click", async () => {
-                clearMessage();
-
-                // Firestore からデータを読み込み
-                try {
-                    const firestoreStaff = await loadStaffFromFirestore();
-                    if (firestoreStaff.length > 0) {
-                        staffList = firestoreStaff;
-                        console.log("✅ Firestore の職員情報を使用（Google ログイン）");
-                    }
-
-                    const firestoreTrainings = await loadTrainingsFromFirestore();
-                    if (Object.keys(firestoreTrainings).length > 0) {
-                        Object.assign(trainingData, firestoreTrainings);
-                        console.log("✅ Firestore の研修情報を使用（Google ログイン）");
-                    }
-
-                    // 既存のカードを全削除
-                    if (trainingGrid) {
-                        trainingGrid.innerHTML = "";
-                    }
-
-                    // Firestore から読み込んだ全研修を表示
-                    Object.keys(trainingData).forEach(key => {
-                        renderTrainingCard(key, trainingData[key]);
-                    });
-
-                    // iPhone でも確認できるようにアラート表示
-                    const staffCount = staffList.length;
-                    const trainingCount = Object.keys(trainingData).length;
-                    alert(`✅ Google ログイン完了\n\n職員情報: ${staffCount}人\n研修情報: ${trainingCount}件\n\nFirestore から正常にデータを読み込みました！`);
-                } catch (error) {
-                    console.error("❌ データ読み込みエラー:", error);
-                    alert(`❌ エラーが発生しました\n\n${error.message}`);
-                }
-
-                // 職員選択モーダルを表示
-                const staffSelectionFloor = document.getElementById("staff-selection-floor");
-                const staffSelectionRole = document.getElementById("staff-selection-role");
-                const staffSelectionName = document.getElementById("staff-selection-name");
-
-                // フロア選択時の処理
-                const updateSelectionRoleOptions = () => {
-                    if (!staffSelectionFloor || !staffSelectionRole) return;
-                    const selectedFloor = staffSelectionFloor.value;
-                    const roles = rolesByFloor[selectedFloor] || [];
-                    staffSelectionRole.innerHTML = roles.map(role => `<option value="${role}">${role}</option>`).join("");
-                    updateSelectionNameOptions();
-                };
-
-                // 職種選択時の処理
-                const updateSelectionNameOptions = () => {
-                    if (!staffSelectionFloor || !staffSelectionRole || !staffSelectionName) return;
-                    const selectedFloor = staffSelectionFloor.value;
-                    const selectedRole = staffSelectionRole.value;
-
-                    const filteredStaff = staffList.filter(s => s.floor === selectedFloor && s.role === selectedRole);
-
-                    if (filteredStaff.length === 0) {
-                        staffSelectionName.innerHTML = '<option value="">該当する職員がいません</option>';
-                    } else {
-                        staffSelectionName.innerHTML = filteredStaff.map(staff =>
-                            `<option value="${staff.name}">${staff.name}</option>`
-                        ).join("");
-                    }
-                };
-
-                // イベントリスナー設定
-                staffSelectionFloor.removeEventListener("change", updateSelectionRoleOptions);
-                staffSelectionRole.removeEventListener("change", updateSelectionNameOptions);
-                staffSelectionFloor.addEventListener("change", updateSelectionRoleOptions);
-                staffSelectionRole.addEventListener("change", updateSelectionNameOptions);
-
-                // 初期化
-                updateSelectionRoleOptions();
-
-                const staffSelectionModal = document.getElementById("staff-selection-modal");
-                staffSelectionModal.style.display = "flex";
-            });
-        }
-
-        // 職員選択モーダルを閉じる
-        const closeStaffSelectionBtn = document.getElementById("close-staff-selection-btn");
-        if (closeStaffSelectionBtn) {
-            closeStaffSelectionBtn.addEventListener("click", () => {
-                document.getElementById("staff-selection-modal").style.display = "none";
-            });
-        }
-
-        // 職員選択確定ボタン
-        const confirmStaffSelectionBtn = document.getElementById("confirm-staff-selection-btn");
-        if (confirmStaffSelectionBtn) {
-            confirmStaffSelectionBtn.addEventListener("click", () => {
-                const selectedName = document.getElementById("staff-selection-name").value.trim();
-
-                if (!selectedName || selectedName === "該当する職員がいません") {
-                    alert("職員を選択してください");
-                    return;
-                }
-
-                // ログイン完了
-                isLoggedIn = true;
-                showMessage("Googleでログインしました");
-                setTimeout(() => {
-                    loginWrapper.style.display = "none";
-                    portalContainer.style.display = "block";
-                    userDisplay.textContent = selectedName;
-                    document.getElementById("staff-selection-modal").style.display = "none";
+        // Enterキーでもログインできるようにする
+        if (loginPinInput) {
+            loginPinInput.addEventListener("keydown", (e) => {
+                if (e.key === "Enter") {
                     clearMessage();
-                }, 500);
+                    performLogin();
+                }
             });
         }
 
@@ -2143,17 +2140,17 @@
         const renderTrainingCard = (key, data) => {
             if (!trainingGrid) return;
             const cardDesc = data.description || data.summary || "";
-
+            
             // 説明文を180文字で省略
-            const truncatedDesc = cardDesc.length > 180
-                ? cardDesc.substring(0, 180) + "..."
+            const truncatedDesc = cardDesc.length > 180 
+                ? cardDesc.substring(0, 180) + "..." 
                 : cardDesc;
-
+            
             // 受講人数を計算
             const completedCount = historyList.filter(item => item.trainingTitle === data.title).length;
             const totalStaffCount = staffList.length;
             const completionText = `（${completedCount}/${totalStaffCount}人）研修済み`;
-
+            
             const cardHtml = `
             <div class="training-card" id="card-${key}">
                 <div class="card-body" onclick="openDetail('${key}')" style="cursor: pointer;">
