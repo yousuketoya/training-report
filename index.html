@@ -1819,8 +1819,14 @@
                     updateDetailRoleOptions();
 
                     console.log("📊 ログイン後データ準備完了");
+
+                    // iPhone でも確認できるようにアラート表示
+                    const staffCount = staffList.length;
+                    const trainingCount = Object.keys(trainingData).length;
+                    alert(`✅ ログイン完了\n\n職員情報: ${staffCount}人\n研修情報: ${trainingCount}件\n\nFirestore から正常にデータを読み込みました！`);
                 } catch (error) {
                     console.error("❌ データ読み込みエラー:", error);
+                    alert(`❌ エラーが発生しました\n\n${error.message}`);
                 }
             })();
 
@@ -1879,8 +1885,14 @@
                         Object.assign(trainingData, firestoreTrainings);
                         console.log("✅ Firestore の研修情報を使用（Google ログイン）");
                     }
+
+                    // iPhone でも確認できるようにアラート表示
+                    const staffCount = staffList.length;
+                    const trainingCount = Object.keys(trainingData).length;
+                    alert(`✅ Google ログイン完了\n\n職員情報: ${staffCount}人\n研修情報: ${trainingCount}件\n\nFirestore から正常にデータを読み込みました！`);
                 } catch (error) {
                     console.error("❌ データ読み込みエラー:", error);
+                    alert(`❌ エラーが発生しました\n\n${error.message}`);
                 }
 
                 // 職員選択モーダルを表示
