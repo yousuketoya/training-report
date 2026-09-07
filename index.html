@@ -1820,6 +1820,16 @@
 
                     console.log("📊 ログイン後データ準備完了");
 
+                    // 既存のカードを全削除
+                    if (trainingGrid) {
+                        trainingGrid.innerHTML = "";
+                    }
+
+                    // Firestore から読み込んだ全研修を表示
+                    Object.keys(trainingData).forEach(key => {
+                        renderTrainingCard(key, trainingData[key]);
+                    });
+
                     // iPhone でも確認できるようにアラート表示
                     const staffCount = staffList.length;
                     const trainingCount = Object.keys(trainingData).length;
@@ -1885,6 +1895,16 @@
                         Object.assign(trainingData, firestoreTrainings);
                         console.log("✅ Firestore の研修情報を使用（Google ログイン）");
                     }
+
+                    // 既存のカードを全削除
+                    if (trainingGrid) {
+                        trainingGrid.innerHTML = "";
+                    }
+
+                    // Firestore から読み込んだ全研修を表示
+                    Object.keys(trainingData).forEach(key => {
+                        renderTrainingCard(key, trainingData[key]);
+                    });
 
                     // iPhone でも確認できるようにアラート表示
                     const staffCount = staffList.length;
