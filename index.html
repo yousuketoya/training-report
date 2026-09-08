@@ -673,7 +673,7 @@
             <div id="status-message" class="status-message"></div>
 
             <div style="text-align:center; margin-top:1.5rem;">
-                <a id="open-first-setup-link" style="font-size:0.8rem; color:#94a3b8; cursor:pointer; text-decoration:underline;">初回セットアップ（最初の管理者を設定）</a>
+                <a id="open-first-setup-link" style="display:none; font-size:0.8rem; color:#94a3b8; cursor:pointer; text-decoration:underline;">初回セットアップ（最初の管理者を設定）</a>
             </div>
         </div>
     </div>
@@ -2168,6 +2168,25 @@
         const firstSetupPinInput = document.getElementById("first-setup-pin");
         const confirmFirstSetupBtn = document.getElementById("confirm-first-setup-btn");
 
+        // 既に管理者が1人でも存在する場合は「初回セットアップ」リンクを非表示にする
+        // （取得に失敗した場合は、念のため表示しておく＝管理者を作り直せなくなる事態を防ぐ）
+        const checkFirstSetupVisibility = async () => {
+            if (!openFirstSetupLink) return;
+            try {
+                const firestoreStaff = await loadStaffFromFirestore();
+                staffList = firestoreStaff;
+                const hasAdmin = firestoreStaff.some(s => s.permission === "admin");
+                openFirstSetupLink.style.display = hasAdmin ? "none" : "inline";
+            } catch (error) {
+                console.error("❌ 初回セットアップ表示判定エラー:", error);
+                openFirstSetupLink.style.display = "inline";
+            }
+        };
+        checkFirstSetupVisibility();
+        // Firebaseモジュールの読み込みタイミングによって判定が早すぎることがあるため、
+        // ページ全体の読み込み完了後にもう一度確認する
+        window.addEventListener("load", checkFirstSetupVisibility);
+
         if (openFirstSetupLink) {
             openFirstSetupLink.addEventListener("click", async () => {
                 firstSetupStaffSelect.innerHTML = '<option value="">読み込み中...</option>';
@@ -2229,6 +2248,7 @@
                     firstSetupModal.style.display = "none";
                     firstSetupLoginIdInput.value = "";
                     firstSetupPinInput.value = "";
+                    if (openFirstSetupLink) openFirstSetupLink.style.display = "none";
                 } catch (error) {
                     console.error("❌ Firestore保存エラー:", error);
                     alert("Firestoreへの保存に失敗しました");
