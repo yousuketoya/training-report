@@ -671,6 +671,36 @@
             </div>
 
             <div id="status-message" class="status-message"></div>
+
+            <div style="text-align:center; margin-top:1.5rem;">
+                <a id="open-first-setup-link" style="font-size:0.8rem; color:#94a3b8; cursor:pointer; text-decoration:underline;">初回セットアップ（最初の管理者を設定）</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 初回セットアップモーダル（最初の管理者を仮登録するための一時的な仕組み） -->
+    <div id="first-setup-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="max-width: 420px;">
+            <div class="modal-header">
+                <h2>🔧 初回セットアップ</h2>
+                <button id="close-first-setup-btn" class="btn-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:0.85rem; color:#64748b; margin-bottom:1rem;">
+                    登録済みの職員一覧から、最初の管理者にする方を選んで職員番号と暗証番号を設定してください。
+                </p>
+                <div class="form-row-group">
+                    <label>対象の職員</label>
+                    <select id="first-setup-staff-select" style="width:100%; padding:8px; margin-bottom:0.75rem;">
+                        <option value="">読み込み中...</option>
+                    </select>
+                    <label>職員番号（例：01）</label>
+                    <input type="text" id="first-setup-login-id" class="form-control" placeholder="01" inputmode="numeric" maxlength="2" style="margin-bottom:0.75rem;">
+                    <label>暗証番号（4桁）</label>
+                    <input type="password" id="first-setup-pin" class="form-control" placeholder="1234" inputmode="numeric" maxlength="4">
+                </div>
+                <button id="confirm-first-setup-btn" class="btn btn-primary" style="width:100%; padding:0.75rem; margin-top:1.25rem;">管理者として設定する</button>
+            </div>
         </div>
     </div>
 
@@ -1118,7 +1148,10 @@
                         id: doc.id,
                         name: doc.data().name,
                         floor: doc.data().floor,
-                        role: doc.data().role
+                        role: doc.data().role,
+                        loginId: doc.data().loginId || "",
+                        pin: doc.data().pin || "",
+                        permission: doc.data().permission || "staff"
                     });
                 });
 
@@ -2123,6 +2156,83 @@
             logoutBtn.addEventListener("click", () => {
                 clearMessage();
                 performLogout();
+            });
+        }
+
+        // --- 初回セットアップ（最初の管理者を仮登録するための一時的な仕組み） ---
+        const firstSetupModal = document.getElementById("first-setup-modal");
+        const openFirstSetupLink = document.getElementById("open-first-setup-link");
+        const closeFirstSetupBtn = document.getElementById("close-first-setup-btn");
+        const firstSetupStaffSelect = document.getElementById("first-setup-staff-select");
+        const firstSetupLoginIdInput = document.getElementById("first-setup-login-id");
+        const firstSetupPinInput = document.getElementById("first-setup-pin");
+        const confirmFirstSetupBtn = document.getElementById("confirm-first-setup-btn");
+
+        if (openFirstSetupLink) {
+            openFirstSetupLink.addEventListener("click", async () => {
+                firstSetupStaffSelect.innerHTML = '<option value="">読み込み中...</option>';
+                firstSetupModal.style.display = "flex";
+
+                try {
+                    const firestoreStaff = await loadStaffFromFirestore();
+                    if (firestoreStaff.length > 0) {
+                        staffList = firestoreStaff;
+                    }
+                } catch (error) {
+                    console.error("❌ 職員情報読み込みエラー:", error);
+                }
+
+                if (staffList.length === 0) {
+                    firstSetupStaffSelect.innerHTML = '<option value="">登録済みの職員がいません</option>';
+                } else {
+                    firstSetupStaffSelect.innerHTML = staffList.map((s, i) =>
+                        `<option value="${i}">${s.name}（${s.floor}・${s.role}）</option>`
+                    ).join("");
+                }
+            });
+        }
+
+        if (closeFirstSetupBtn) {
+            closeFirstSetupBtn.addEventListener("click", () => {
+                firstSetupModal.style.display = "none";
+            });
+        }
+
+        if (confirmFirstSetupBtn) {
+            confirmFirstSetupBtn.addEventListener("click", async () => {
+                const index = firstSetupStaffSelect.value;
+                const loginId = firstSetupLoginIdInput.value.trim().padStart(2, "0");
+                const pin = firstSetupPinInput.value.trim();
+
+                if (index === "") {
+                    alert("職員を選択してください");
+                    return;
+                }
+                if (!/^\d{2}$/.test(loginId)) {
+                    alert("職員番号は2桁の数字で入力してください（例：01）");
+                    return;
+                }
+                if (!/^\d{4}$/.test(pin)) {
+                    alert("暗証番号は4桁の数字で入力してください");
+                    return;
+                }
+
+                const targetStaff = staffList[index];
+                const staffId = targetStaff.id || `${targetStaff.floor}_${targetStaff.role}_${targetStaff.name}`.replace(/\s+/g, '_');
+                const updatedStaff = { ...targetStaff, loginId, pin, permission: "admin", id: staffId };
+                staffList[index] = updatedStaff;
+                localStorage.setItem("roken_staff_list", JSON.stringify(staffList));
+
+                try {
+                    await setDoc(doc(db, "staff", staffId), updatedStaff);
+                    alert(`「${targetStaff.name}」さんを管理者（職員番号：${loginId}）として設定しました。\nこの番号と暗証番号でログインしてください。`);
+                    firstSetupModal.style.display = "none";
+                    firstSetupLoginIdInput.value = "";
+                    firstSetupPinInput.value = "";
+                } catch (error) {
+                    console.error("❌ Firestore保存エラー:", error);
+                    alert("Firestoreへの保存に失敗しました");
+                }
             });
         }
 
